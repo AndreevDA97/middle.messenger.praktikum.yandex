@@ -1,0 +1,26 @@
+<div id="{{dialogId}}" class="modal modal_closable modal_show">
+    <div class="modal-dialog">
+        <div class="modal-dialog__header {{#if titleError}}modal-dialog__header_error{{/if}}">
+            <h2>{{#if titleError}}{{titleError}}{{else}}{{title}}{{/if}}</h2>
+            <hr>
+        </div>
+        <div class="modal-dialog__content">
+            <form class="form" action="#" method="post" enctype="multipart/form-data">
+                <div class="form__group">
+                    <label class="input-file">
+                        <input type="file" name="avatar">
+                        <span>{{{fileText}}}</span>
+                    </label>
+                </div>
+                <div class="form__submit">
+                    <button type="submit">{{submitText}}</button>
+                </div>
+            </form>
+        </div>
+        {{#if fileError}}
+            <div class="modal-dialog__info modal-dialog__info_error">
+                {{fileError}}
+            </div>
+        {{/if}}
+    </div>
+</div>

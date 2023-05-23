@@ -1,0 +1,43 @@
+---
+title: "Яндекс Практикум (Спринт 1) - Страница входа"
+login: "ivanivanov"
+#loginError: "Неверный логин"
+password: "qwerty123"
+#passwordError: "Неверный пароль"
+---
+{{> _header}}
+    <div id="login" class="modal modal_show">
+        <div class="modal-dialog">
+            <div class="modal-dialog__header">
+                <h2>Вход</h2>
+                <hr>
+            </div>
+            <div class="modal-dialog__content">
+                <form class="form" action="#" method="get">
+                    <div class="form__group">
+                        <input class="form__input {{#if loginError}}form__input_error{{/if}}"
+                               type="text" placeholder="Логин" name="login" value="{{login}}" required>
+                        <label class="form__label" for="login">Логин</label>
+                        {{#if loginError}}
+                            <label class="form__error">{{loginError}}</label>
+                        {{/if}}
+                    </div>
+                    <div class="form__group">
+                        <input class="form__input {{#if passwordError}}form__input_error{{/if}}"
+                               type="password" placeholder="Пароль" name="password" value="{{password}}">
+                        <label class="form__label" for="password">Пароль</label>
+                        {{#if passwordError}}
+                            <label class="form__error">{{passwordError}}</label>
+                        {{/if}}
+                    </div>
+                    <div class="form__submit">
+                        <button type="submit">Войти</button>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-dialog__info">
+                <a href="register.hbs">Ещё не зарегистрированы?</a>
+            </div>
+        </div>
+    </div>
+{{> _footer}}

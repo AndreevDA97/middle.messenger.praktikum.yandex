@@ -1,0 +1,37 @@
+---
+title: "Яндекс Практикум (Спринт 1) - Выбрать чат"
+message: "Выберите чат чтобы отправить сообщение"
+#
+# Левая панель контактов
+#
+contacts: [
+{ user: "Андрей", message: "Изображение", time: "10:49", count: "2" },
+{ user: "Киноклуб", message: "стикер", isMsgOwner: true, time: "12:00" },
+{ user: "Илья", message: "Друзья, у меня для вас особенный выпуск новостей!...", time: "15:12", count: "4" },
+{ user: "Вадим", message: "Круто!", isMsgOwner: true, time: "Пт", isActive: true },
+{ user: "тет-а-теты", message: "И Human Interface Guidelines и Material Design рекомендуют...", time: "Ср" },
+{ user: "1, 2, 3", message: "Миллионы россиян ежедневно проводят десятки часов свое...", time: "Пн" },
+{ user: "Design Destroyer", message: "В 2008 году художник Jon Rafman начал собирать...", time: "Пн" },
+{ user: "Day.", message: "Так увлёкся работой по курсу, что совсем забыл его анонсир...", time: "1 Мая 2020" },
+{ user: "Стас Рогозин", message: "Можно или сегодня или завтра вечером.", time: "12 Апр 2020" },
+]
+#search: "Киноклуб"
+profile: false
+---
+{{> _header}}
+    <div class="chat-container">
+        <aside class="chat-container__sidebar">
+            {{> sidebar contacts=contacts search=search profile=profile}}
+        </aside>
+        <main class="chat-container__window">
+            <div class="chat-welcome">
+                <div class="chat-welcome__logo">
+                    <span class="icon icon_chats"></span>
+                </div>
+                <div class="chat-welcome__message">
+                    <span>{{message}}</span>
+                </div>
+            </div>
+        </main>
+    </div>
+{{> _footer}}

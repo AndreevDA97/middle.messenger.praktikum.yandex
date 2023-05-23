@@ -1,0 +1,25 @@
+---
+title: "Яндекс Практикум (Спринт 1) - Главная"
+description: "Просмотр макета веб-чата осуществляется по ссылкам ниже, возврат на главную с помощью навигации браузера"
+---
+{{> _header}}
+    <header><h1>{{title}}</h1></header>
+    <article><h2>{{description}}</h2></article>
+    <hr>
+    <nav class="pages">
+        <a href="login.hbs">Страница входа</a> |
+        <a href="register.hbs">Страница регистрации</a> |
+        <a href="chat-welcome.hbs">Выбрать чат</a> |
+        <a href="chat-dialog.hbs">Чат</a> |
+        <a href="chat-search.hbs">Поиск</a> |
+        <a href="chat-functions.hbs">Функции чата</a> |
+        <a href="chat-add.hbs">Добавить пользователя</a> |
+        <a href="user-profile.hbs">Профиль</a> |
+        <a href="user-edit.hbs">Изменить данные</a> |
+        <a href="user-password-edit.hbs">Изменить пароль</a> |
+        <a href="user-avatar-edit.hbs">Загрузить новый аватар</a> |
+        <a href="500.hbs">Ошибка 500</a> |
+        <a href="404.hbs">Ошибка 404</a>
+    </nav>
+    {{> _debug}}
+{{> _footer}}

@@ -1,0 +1,51 @@
+<div class="user-profile">
+    <div class="user-profile__avatar">
+        <div class="user-avatar">
+            {{#unless editMode}}
+                <div class="user-avatar__edit">
+                    <span>Поменять<br>аватар</span>
+                </div>
+            {{/unless}}
+            <div class="initial-avatar">
+                <span class="icon icon_user"></span>
+            </div>
+        </div>
+        {{#unless editMode}}
+            <div class="user-profile__display-name">
+                <span>{{displayName}}</span>
+            </div>
+        {{/unless}}
+    </div>
+    <div class="user-profile__form">
+        <form class="form-horizontal" action="#" method="get">
+            {{#each formFields}}
+                <div class="form-horizontal__group">
+                    <label class="form-horizontal__label" for="{{name}}">{{title}}</label>
+                    <input class="form-horizontal__input {{#unless ../editMode}}form-horizontal__input_disabled{{/unless}}"
+                           type="{{#if type}}{{type}}{{else}}text{{/if}}"
+                           placeholder="{{title}}"
+                           name="{{name}}"
+                           value="{{value}}">
+                </div>
+                {{#if errorMsg}}
+                    <label class="form-horizontal__error">{{errorMsg}}</label>
+                {{/if}}
+                {{#unless @last}}<hr>{{/unless}}
+            {{/each}}
+            {{#if editMode}}
+                <div class="form__submit">
+                    <button type="submit">Сохранить</button>
+                </div>
+            {{/if}}
+        </form>
+    </div>
+    {{#unless editMode}}
+        <nav class="user-profile__links">
+            <a class="user-profile__link" href="user-edit.hbs">Изменить данные</a>
+            <hr>
+            <a class="user-profile__link" href="user-password-edit.hbs">Изменить пароль</a>
+            <hr>
+            <a class="user-profile__link user-profile__link_exit" href="index.hbs">Выйти</a>
+        </nav>
+    {{/unless}}
+</div>
