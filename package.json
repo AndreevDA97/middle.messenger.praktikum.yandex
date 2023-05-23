@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "parcel src/pages/index.hbs --no-cache --open --port 3000",
     "build": "parcel build src/pages/index.hbs",
-    "start": "parcel build src/pages/index.hbs && node server.js"
+    "start": "npm run build && node server.js"
   },
   "keywords": [],
   "author": "",
