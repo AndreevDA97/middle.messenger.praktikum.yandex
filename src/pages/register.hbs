@@ -11,36 +11,36 @@ formFields: [
 ]
 ---
 {{> _header}}
-<div id="login" class="modal modal_show">
-    <div class="modal-dialog">
-        <div class="modal-dialog__header">
-            <h2>Регистрация</h2>
-            <hr>
-        </div>
-        <div class="modal-dialog__content">
-            <form class="form" action="#" method="get">
-                {{#each formFields}}
-                    <div class="form__group">
-                        <input class="form__input {{#if errorMsg}}form__input_error{{/if}}"
-                               type="{{#if type}}{{type}}{{else}}text{{/if}}"
-                               placeholder="{{title}}"
-                               name="{{name}}"
-                               value="{{value}}">
+    <main id="register" class="modal modal_show">
+        <div class="modal-dialog">
+            <div class="modal-dialog__header">
+                <h2>Регистрация</h2>
+                <hr>
+            </div>
+            <div class="modal-dialog__content">
+                <form class="form" action="#" method="get">
+                    {{#each formFields}}
+                        <div class="form__group">
+                            <input class="form__input {{#if errorMsg}}form__input_error{{/if}}"
+                                   type="{{#if type}}{{type}}{{else}}text{{/if}}"
+                                   placeholder="{{title}}"
+                                   name="{{name}}"
+                                   value="{{value}}">
 
-                        <label class="form__label" for="{{name}}">{{title}}</label>
-                        {{#if errorMsg}}
-                            <label class="form__error">{{errorMsg}}</label>
-                        {{/if}}
+                            <label class="form__label" for="{{name}}">{{title}}</label>
+                            {{#if errorMsg}}
+                                <label class="form__error">{{errorMsg}}</label>
+                            {{/if}}
+                        </div>
+                    {{/each}}
+                    <div class="form__submit">
+                        <button type="submit">Зарегистрироваться</button>
                     </div>
-                {{/each}}
-                <div class="form__submit">
-                    <button type="submit">Зарегистрироваться</button>
-                </div>
-            </form>
+                </form>
+            </div>
+            <div class="modal-dialog__info">
+                <a href="login.hbs">Уже есть данные входа?</a>
+            </div>
         </div>
-        <div class="modal-dialog__info">
-            <a href="login.hbs">Уже есть данные входа?</a>
-        </div>
-    </div>
-</div>
+    </main>
 {{> _footer}}

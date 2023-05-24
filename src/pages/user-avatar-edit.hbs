@@ -25,13 +25,13 @@ loadFileData: {
 ---
 {{> _header}}
     <div class="chat-container">
-        <section class="chat-container__go-back" onclick="history.back(-1)">
+        <div class="chat-container__go-back" onclick="history.back(-1)">
             <span class="icon icon_go-back"></span>
-        </section>
-        <main class="chat-container__window">
+        </div>
+        <div class="chat-container__window">
             {{> profile displayName=displayName editMode=editMode
                     formFields=formFields loadFileModal=loadFileModal}}
-        </main>
+        </div>
     </div>
     {{#with loadFileData}}
         {{> file-modal dialogId=dialogId title=title titleError=titleError

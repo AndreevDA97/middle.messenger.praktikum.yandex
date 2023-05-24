@@ -1,4 +1,4 @@
-<div class="chat-dialog">
+<main class="chat-dialog">
     <section class="chat-dialog__user-panel">
         <div class="chat-user">
             <div class="chat-user__avatar"></div>
@@ -31,7 +31,7 @@
                 <div class="chat-history__row chat-history__row_{{sender}}">
                     {{#if image}}
                         <div class="chat-image chat-image_{{sender}}">
-                            <img src="{{image}}" class="chat-image__image">
+                            <img src="{{image}}" class="chat-image__image" alt="{{image}}">
                             <div class="chat-image__status">
                                 {{#if delivered}}
                                     <span class="chat-image__verified">
@@ -90,4 +90,4 @@
             </div>
         </div>
     </section>
-</div>
+</main>

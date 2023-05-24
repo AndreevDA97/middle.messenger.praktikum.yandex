@@ -30,11 +30,11 @@ openMenu: true
 ---
 {{> _header}}
     <div class="chat-container">
-        <aside class="chat-container__sidebar">
+        <div class="chat-container__sidebar">
             {{> sidebar contacts=contacts search=search profile=profile}}
-        </aside>
-        <main class="chat-container__window">
+        </div>
+        <div class="chat-container__window">
             {{> chat-dialog chatter=chatter history=history openMenu=openMenu}}
-        </main>
+        </div>
     </div>
 {{> _footer}}
