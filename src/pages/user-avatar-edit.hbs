@@ -1,0 +1,40 @@
+---
+title: "Яндекс Практикум (Спринт 1) - Загрузить новый аватар"
+displayName: "Иван"
+editMode: false
+formFields: [
+{ title: "Почта", name: "email", value: "pochta@mail.ru", errorMsg: "" },
+{ title: "Логин", name: "login", value: "ivanivanov", errorMsg: "" },
+{ title: "Имя", name: "first_name", value: "Иван", errorMsg: "" },
+{ title: "Фамилия", name: "second_name", value: "Иванов", errorMsg: "" },
+{ title: "Имя в чате", name: "display_name", value: "Иван", errorMsg: "" },
+{ title: "Телефон", name: "phone", value: "+7 (909) 934 23 54", errorMsg: "" }
+]
+loadFileModal: true
+#
+# настройки модального окна выбора файла
+#
+loadFileData: {
+    dialogId: "user-avatar-edit",
+    title: "Загрузите файл",
+    titleError: "",
+    fileText: "Выбрать файл на<br>компьютере",
+    fileError: "",
+    submitText: "Поменять"
+}
+---
+{{> _header}}
+    <div class="chat-container">
+        <div class="chat-container__go-back" onclick="history.back(-1)">
+            <span class="icon icon_go-back"></span>
+        </div>
+        <div class="chat-container__window">
+            {{> profile displayName=displayName editMode=editMode
+                    formFields=formFields loadFileModal=loadFileModal}}
+        </div>
+    </div>
+    {{#with loadFileData}}
+        {{> file-modal dialogId=dialogId title=title titleError=titleError
+                fileText=fileText fileError=fileError submitText=submitText }}
+    {{/with}}
+{{> _footer}}

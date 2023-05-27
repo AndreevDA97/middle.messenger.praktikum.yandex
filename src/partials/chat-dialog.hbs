@@ -1,0 +1,93 @@
+<main class="chat-dialog">
+    <section class="chat-dialog__user-panel">
+        <div class="chat-user">
+            <div class="chat-user__avatar"></div>
+            <div class="chat-user__name">
+                {{chatter}}
+            </div>
+            <div class="chat-user__menu">
+                <div class="dropdown">
+                    <div class="dropdown__btn {{#if openMenu}}dropdown__btn_active{{/if}}">
+                        <span class="icon icon_menu"></span>
+                    </div>
+                    <div class="dropdown__menu {{#if openMenu}}dropdown__menu_show{{/if}}">
+                        <a href="#">
+                            <span class="icon icon_user-remove"></span>
+                            Удалить пользователя
+                        </a>
+                        <a href="#">
+                            <span class="icon icon_trash"></span>
+                            Очистить переписку
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+    </section>
+    <section class="chat-dialog__history-panel">
+        <div class="chat-history">
+            {{#each history}}
+                <div class="chat-history__row chat-history__row_{{sender}}">
+                    {{#if image}}
+                        <div class="chat-image chat-image_{{sender}}">
+                            <img src="{{image}}" class="chat-image__image" alt="{{image}}">
+                            <div class="chat-image__status">
+                                {{#if delivered}}
+                                    <span class="chat-image__verified">
+                                                <span class="icon icon_verified"></span>
+                                            </span>
+                                {{/if}}
+                                <span class="chat-image__time">{{time}}</span>
+                            </div>
+                        </div>
+                    {{else}}
+                        <div class="chat-message chat-message_{{sender}}">
+                            <span class="chat-message__text">{{{message}}}</span>
+                            <div class="chat-message__status">
+                                {{#if delivered}}
+                                    <span class="chat-message__verified">
+                                                <span class="icon icon_verified"></span>
+                                            </span>
+                                {{/if}}
+                                <span class="chat-message__time">{{time}}</span>
+                            </div>
+                        </div>
+                    {{/if}}
+                </div>
+            {{/each}}
+        </div>
+    </section>
+    <section class="chat-dialog__chat-panel">
+        <hr>
+        <div class="chat-input">
+            <div class="chat-input__menu">
+                <div class="dropdown">
+                    <div class="dropdown__btn {{#if openMenu}}dropdown__btn_active{{/if}}">
+                        <span class="icon icon_link"></span>
+                    </div>
+                    <div class="dropdown__menu dropdown__menu_droup {{#if openMenu}}dropdown__menu_show{{/if}}">
+                        <a href="#">
+                            <span class="icon icon_image"></span>
+                            Фото или Видео
+                        </a>
+                        <a href="#">
+                            <span class="icon icon_image"></span>
+                            Файл
+                        </a>
+                        <a href="#">
+                            <span class="icon icon_location"></span>
+                            Локация
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="chat-input__message">
+                <input type="text" name="message" placeholder="Сообщение">
+            </div>
+            <div class="chat-input__send">
+                <span class="icon icon_navigation"></span>
+            </div>
+        </div>
+    </section>
+</main>

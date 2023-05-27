@@ -1,0 +1,25 @@
+---
+title: "Яндекс Практикум (Спринт 1) - Изменить данные"
+displayName: ""
+editMode: true
+formFields: [
+{ title: "Почта", name: "email", value: "pochta@mail.ru", errorMsg: "" },
+{ title: "Логин", name: "login", value: "ivanivanov", errorMsg: "" },
+{ title: "Имя", name: "first_name", value: "Иван", errorMsg: "" },
+{ title: "Фамилия", name: "second_name", value: "Иванов", errorMsg: "" },
+{ title: "Имя в чате", name: "display_name", value: "Иван", errorMsg: "" },
+{ title: "Телефон", name: "phone", value: "+7 (909) 934 23 54", errorMsg: "" }
+]
+loadFileModal: false
+---
+{{> _header}}
+    <div class="chat-container">
+        <div class="chat-container__go-back" onclick="history.back(-1)">
+            <span class="icon icon_go-back"></span>
+        </div>
+        <div class="chat-container__window">
+            {{> profile displayName=displayName editMode=editMode
+                    formFields=formFields loadFileModal=loadFileModal}}
+        </div>
+    </div>
+{{> _footer}}

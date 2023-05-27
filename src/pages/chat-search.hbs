@@ -1,0 +1,39 @@
+---
+title: "Яндекс Практикум (Спринт 1) - Поиск"
+#
+# Левая панель контактов
+#
+contacts: [
+{ user: "Андрей", message: "Изображение", time: "10:49", count: "2" },
+{ user: "Киноклуб", message: "стикер", isMsgOwner: true, time: "12:00" },
+{ user: "Илья", message: "Друзья, у меня для вас особенный выпуск новостей!...", time: "15:12", count: "4" },
+{ user: "Вадим", message: "Круто!", isMsgOwner: true, time: "Пт", isActive: true },
+{ user: "тет-а-теты", message: "И Human Interface Guidelines и Material Design рекомендуют...", time: "Ср" },
+{ user: "1, 2, 3", message: "Миллионы россиян ежедневно проводят десятки часов свое...", time: "Пн" },
+{ user: "Design Destroyer", message: "В 2008 году художник Jon Rafman начал собирать...", time: "Пн" },
+{ user: "Day.", message: "Так увлёкся работой по курсу, что совсем забыл его анонсир...", time: "1 Мая 2020" },
+{ user: "Стас Рогозин", message: "Можно или сегодня или завтра вечером.", time: "12 Апр 2020" },
+]
+search: "Киноклуб"
+profile: false
+#
+# Основная область чата
+#
+chatter: "Вадим"
+history: [
+{ sender: "owner", type: "text", message: "Круто!", time: "12:00", delivered: true },
+{ sender: "chatter", type: "image", image: "../../static/images/chatter_photo.png", time: "11:56" },
+{ sender: "chatter", type: "text", message: "Привет! Смотри, тут всплыл интересный кусок лунной космической истории — НАСА в какой-то момент попросила Хассельблад адаптировать модель SWC для полетов на Луну. Сейчас мы все знаем что астронавты летали с моделью 500 EL — и к слову говоря, все тушки этих камер все еще находятся на поверхности Луны, так как астронавты с собой забрали только кассеты с пленкой.\r\n\r\nХассельблад в итоге адаптировал SWC для космоса, но что-то пошло не так и на ракету они так никогда и не попали. Всего их было произведено 25 штук, одну из них недавно продали на аукционе за 45000 евро.", time: "11:56" },
+{ sender: "system", type: "text", message: "19 июня" }
+]
+---
+{{> _header}}
+    <div class="chat-container">
+        <div class="chat-container__sidebar">
+            {{> sidebar contacts=contacts search=search profile=profile}}
+        </div>
+        <div class="chat-container__window">
+            {{> chat-dialog chatter=chatter history=history}}
+        </div>
+    </div>
+{{> _footer}}

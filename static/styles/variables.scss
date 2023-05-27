@@ -1,0 +1,79 @@
+/*
+ * Цветовая палитра
+ */
+
+$main-color: #8733F3; // основной цвет
+$main-bg-color: #EAE4FD; // фон основного цвета
+
+$alt-color: #999999; // дополнительный цвет
+$alt-bg-color: #EFEFEF; // фон дополнительного цвета
+
+$btn-active-color: #F8F8F8; // бледный фон дополнительного цвета
+$sidebar-bg-color: #FBFBFB; // фон сайдбара
+$mask-bg-color: rgba(0, 0, 0, 0.4); // фон затемнения
+
+$border-color: #EAEAEA; // цвет обводки и линии
+$black-color: #1E1E1E; // черный цвет
+$white-color: #FFFFFF; // белый цвет
+$error-color: #FF007A; // цвет ошибки
+
+/*
+ * Размеры и расположение
+ */
+
+// типографика
+$tag-size: 10px;
+$text-size: 12px;
+$control-size: 14px;
+$title-size: 20px;
+$logo-size: 40px;
+
+// скругление элементов
+$main-radius: 12px;
+$input-radius: 30px;
+$button-radius: 8px;
+$search-radius: 5px;
+$avatar-radius: 50%;
+
+/*
+ * Настройка анимации
+ */
+$fast-transition: 0.1s;
+$slow-transition: 0.3s;
+
+/*
+ * Вспомогательное окружение
+ */
+
+// подключение шрифта
+@mixin use-ext-font {
+  font-display: block;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+}
+
+// вставка svg-иконки
+@mixin svg-icon($path) {
+  mask-image: url($path);
+  mask-size: cover;
+}
+
+// вставка элемента в круге
+@mixin circle-with-span($circle-color, $circle-size, $span-color, $span-size) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background-color: $circle-color;
+  color: $span-color;
+
+  border-radius: 50%;
+  height: $circle-size;
+  width: $circle-size;
+
+  span.icon {
+    font-size: $span-size;
+    background-color: $span-color;
+  }
+}

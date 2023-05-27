@@ -1,0 +1,845 @@
+@import url('../fonts/inter/inter.css');
+@import 'minireset';
+@import 'variables';
+
+/*
+ * Базовые стили
+ */
+
+body {
+  @include use-ext-font;
+  background-color: $white-color;
+  color: $black-color;
+  font-size: $text-size;
+  line-height: $text-size + 3px;
+}
+
+hr {
+  border: 1px solid $border-color;
+  margin: 10px 0;
+}
+
+h1 {
+  font-size: $logo-size;
+  line-height: $logo-size;
+}
+h2 {
+  font-size: $title-size;
+  line-height: $title-size;
+}
+h3 {
+  font-size: $control-size;
+  line-height: $control-size;
+}
+h4 {
+  font-size: $text-size;
+  line-height: $text-size;
+}
+h5 {
+  font-size: $tag-size;
+  line-height: $tag-size;
+}
+
+a {
+  color: $main-color;
+  text-decoration: none;
+}
+button {
+  border: 0;
+  border-radius: $button-radius;
+  background: $main-color;
+  color: $white-color;
+  text-decoration: none;
+  font-size: $control-size;
+  line-height: $control-size;
+  cursor: pointer;
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 12px;
+}
+
+/*
+ * Стили компонентов
+ */
+
+.chat-container {
+  height: 100%;
+  display: flex;
+
+  &__window {
+    flex-grow: 1;
+  }
+  &__sidebar {
+    min-width: 310px;
+    background-color: $sidebar-bg-color;
+    border-right: 1px solid $border-color;
+  }
+  &__go-back {
+    flex-basis: 64px;
+    background-color: $sidebar-bg-color;
+    border-right: 1px solid $border-color;
+    cursor: pointer;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    span.icon {
+      font-size: $title-size;
+      background-color: $alt-color;
+    }
+  }
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  height: 100%;
+}
+.sidebar-header {
+  flex-basis: 102px;
+  padding: 10px 10px 0;
+
+  hr {
+    margin: 14px 0 0px;
+  }
+}
+.sidebar-header-status {
+  position: relative;
+  margin-bottom: 10px;
+
+  &__avatar {
+    width: 47px;
+    height: 47px;
+    border-radius: $avatar-radius;
+    background-color: $alt-bg-color;
+  }
+  &__profile {
+    position: absolute;
+    top: 18px;
+    left: 55px;
+
+    a {
+      color: $alt-color;
+    }
+    span.icon {
+      background-color: $alt-color;
+    }
+  }
+  &__user-add {
+    position: absolute;
+    top: 5px;
+    right: 0;
+
+    cursor: pointer;
+    border-radius: 50%;
+    padding: 7px;
+
+    span.icon {
+      font-size: $title-size + 3px;
+      background-color: $alt-color;
+    }
+
+    &_active {
+      background-color: $btn-active-color;
+
+      span.icon {
+        background-color: $main-color;
+      }
+    }
+  }
+}
+.sidebar-header-search {
+  position: relative;
+
+  span.icon {
+    position: absolute;
+    top: 10px;
+    left: calc(50% - 40px);
+
+    font-size: $control-size;
+    background-color: $alt-color;
+    transition: $fast-transition;
+  }
+  input:focus~span.icon, input:not(:placeholder-shown)~span.icon {
+    left: 15px;
+  }
+  input {
+    @include use-ext-font;
+    width: 100%;
+    height: 32px;
+    border-radius: $search-radius;
+    border: none;
+    background-color: $alt-bg-color;
+    padding: 0 36px;
+  }
+  input:focus, input:not(:placeholder-shown) {
+    outline: none;
+  }
+  input:focus::placeholder {
+    color: transparent;
+  }
+  input::placeholder {
+    text-align: center;
+    color: $alt-color;
+    transition: color $slow-transition;
+  }
+}
+.sidebar-contacts {
+  flex-grow: 1;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    width: 0;
+  }
+
+  &__item {
+    padding: 10px;
+
+    &_active {
+      background-color: $main-bg-color;
+    }
+  }
+
+  hr {
+    margin: 2px 10px;
+  }
+}
+.sidebar-contact {
+  position: relative;
+
+  &__avatar {
+    width: 47px;
+    height: 47px;
+    border-radius: $avatar-radius;
+    background-color: $alt-bg-color;
+  }
+  &__username {
+    color: $black-color;
+
+    position: absolute;
+    left: 55px;
+    top: 0;
+  }
+  &__message {
+    color: $alt-color;
+
+    position: absolute;
+    left: 55px;
+    bottom: 0;
+    height: 30px;
+    width: 70%;
+
+    overflow: hidden;
+    white-space: pre-wrap;
+    text-overflow: ellipsis;
+
+    &_owner:before {
+      color: $black-color;
+      content: 'Вы: ';
+    }
+  }
+  &__time {
+    position: absolute;
+    right: 0;
+    top: 0;
+
+    color: $alt-color;
+    font-size: $tag-size;
+  }
+  &__count {
+    @include circle-with-span($main-color, 20px, $white-color, $text-size);
+    position: absolute;
+    right: 0;
+    bottom: 0;
+  }
+  &__founded {
+    position: absolute;
+    left: 55px;
+    top: 33.33%;
+  }
+}
+
+.chat-welcome {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  &__logo span.icon {
+    background-color: $main-bg-color;
+    font-size: 130px;
+  }
+  &__message {
+    color: $alt-color;
+  }
+}
+
+.chat-dialog {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  height: 100%;
+
+  &__user-panel {
+    flex-basis: 45px;
+
+    hr {
+      margin: 10px 0 0;
+    }
+  }
+  &__history-panel {
+    position: relative;
+    overflow-y: auto;
+    flex-grow: 1;
+  }
+  &__chat-panel {
+    flex-basis: 45px;
+
+    hr {
+      margin: 0 0 10px;
+    }
+  }
+}
+.chat-user {
+  display: flex;
+  align-items: center;
+
+  &__avatar {
+    height: 34px;
+    width: 34px;
+    border-radius: $avatar-radius;
+    background-color: $alt-bg-color;
+  }
+  &__name {
+    margin-left: 10px;
+    font-weight: 600;
+  }
+  &__menu {
+    margin-left: auto;
+    font-size: $control-size + 2px;
+  }
+}
+.chat-history {
+  padding: 20px 0;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  position: absolute;
+  inset: 0;
+
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    width: 0;
+  }
+
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-start;
+
+  &__row {
+    display: flex;
+    flex-direction: row;
+    margin-top: 10px;
+
+    &_system {
+      justify-content: center;
+    }
+    &_owner {
+      justify-content: flex-end;
+    }
+    &_chatter {
+      justify-content: flex-start;
+    }
+  }
+}
+.chat-image {
+  max-width: 40%;
+  position: relative;
+
+  &__image {
+    border: 1px solid $alt-bg-color;
+    border-radius: $main-radius;
+    padding: 10px;
+  }
+  &__status {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    text-align: right;
+  }
+  &__verified {
+    font-size: $tag-size;
+
+    span.icon {
+      background-color: $alt-color;
+    }
+  }
+  &__time {
+    background-color: $mask-bg-color;
+    border-radius: $main-radius;
+    padding: 2px 7px;
+    font-weight: 400;
+    font-size: $tag-size;
+    color: $white-color;
+  }
+}
+.chat-message {
+  max-width: 40%;
+  position: relative;
+  border-radius: $main-radius;
+  padding: 10px;
+
+  &_system {
+    padding: 0 !important;
+    color: $alt-color;
+  }
+  &_owner {
+    background-color: $main-bg-color;
+    border-bottom-right-radius: 0;
+
+    .chat-message__status {
+      text-align: right;
+      font-size: $tag-size;
+      color: $main-color;
+    }
+  }
+  &_chatter {
+    background-color: $alt-bg-color;
+    border-top-left-radius: 0;
+
+    .chat-message__status {
+      text-align: right;
+      font-size: $tag-size;
+      color: $alt-color;
+    }
+  }
+
+  &__text {
+    white-space: pre-line;
+  }
+  &__verified {
+    font-size: $tag-size;
+
+    span.icon {
+      background-color: $alt-color;
+    }
+  }
+  &__time {
+    font-size: $tag-size;
+    opacity: 0.8;
+  }
+}
+.chat-input {
+  display: flex;
+  align-items: center;
+
+  &__menu {
+    font-size: $title-size;
+  }
+  &__message {
+    flex-grow: 1;
+    margin: 0 5px;
+
+    input {
+      width: 100%;
+    }
+    input {
+      @include use-ext-font;
+      width: 100%;
+      border-radius: $input-radius;
+      border: none;
+      background-color: $alt-bg-color;
+      padding: 10px 20px;
+    }
+    input:focus, input:not(:placeholder-shown) {
+      outline: none;
+    }
+    input:focus::placeholder {
+      color: transparent;
+    }
+    input::placeholder {
+      color: $alt-color;
+      transition: color $slow-transition;
+    }
+  }
+  &__send {
+    cursor: pointer;
+    font-size: $title-size;
+    background-color: $main-color;
+    border-radius: $avatar-radius;
+    padding: 5px;
+
+    span.icon {
+      margin-top: 0;
+      background-color: $white-color;
+    }
+  }
+}
+
+.user-profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &__avatar {
+    text-align: center;
+    margin: 60px 0;
+  }
+  &__display-name {
+    margin-top: 20px;
+    font-size: $control-size;
+    font-weight: bold;
+  }
+  &__form {
+    width: 40%;
+    margin-bottom: 60px;
+  }
+  &__links {
+    width: 40%;
+
+    hr {
+      margin: 10px 0;
+    }
+  }
+  &__link {
+    font-size: $control-size;
+
+    &_exit {
+      color: $error-color
+    }
+  }
+}
+
+.form-horizontal {
+  margin-bottom: 0;
+
+  &__group {
+    display: flex;
+    justify-content: space-between;
+  }
+  &__label {
+    padding: 10px 0;
+    font-size: $control-size;
+    color: $black-color;
+  }
+  &__input {
+    @include use-ext-font;
+    width: 50%;
+    border: none;
+    padding: 10px 0;
+    font-size: $control-size;
+    background-color: transparent;
+    text-align: right;
+    color: $black-color;
+
+    &_disabled {
+      pointer-events: none;
+      color: $alt-color;
+    }
+  }
+  &__input:focus, &__input:not(:placeholder-shown) {
+    outline: none;
+  }
+  &__input:focus::placeholder {
+    color: transparent;
+  }
+  &__input::placeholder {
+    color: $alt-color;
+    transition: $slow-transition;
+  }
+  &__error {
+    display: block;
+    text-align: right;
+    font-size: $text-size;
+    color: $error-color;
+  }
+
+  hr {
+    margin: 0;
+  }
+}
+
+.form {
+  margin-bottom: 0;
+
+  &__group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+  }
+  &__label {
+    order: -1;
+    color: transparent;
+    font-size: $tag-size;
+    margin-bottom: 2px;
+    transition: $slow-transition;
+  }
+  &__error {
+    color: $error-color;
+    font-size: $tag-size;
+    margin-top: 2px;
+  }
+  &__input {
+    @include use-ext-font;
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid $main-color;
+    padding: 0 0 7px 0;
+    font-size: $control-size;
+    background-color: transparent;
+
+    &_error {
+      color: $error-color;
+    }
+  }
+  &__input:focus~&__label, &__input:not(:placeholder-shown)~&__label {
+    color: $alt-color;
+  }
+  &__input:focus, &__input:not(:placeholder-shown) {
+    outline: none;
+  }
+  &__input:focus::placeholder {
+    color: transparent;
+  }
+  &__input::placeholder {
+    color: $alt-color;
+    transition: $slow-transition;
+  }
+
+  &__submit {
+    display: flex;
+    flex-direction: column;
+    margin-top: 36px;
+  }
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+
+  &__btn {
+    cursor: pointer;
+    border-radius: $avatar-radius;
+    padding: 7px;
+
+    &_active {
+      background-color: $alt-bg-color;
+    }
+    span.icon {
+      background-color: $alt-color;
+    }
+    &_active span.icon {
+      background-color: $main-color;
+    }
+  }
+  &__menu {
+    display: none;
+    position: absolute;
+    overflow: auto;
+    min-width: max-content;
+    z-index: 1;
+    right: 0;
+    top: 50px;
+
+    padding: 5px 0;
+    border-radius: $main-radius;
+    background-color: $white-color;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    font-size: $text-size;
+    font-weight: 600;
+
+    &_show {
+      display: block;
+    }
+    &_droup {
+      right: unset;
+      top: unset;
+      bottom: 50px;
+    }
+
+    a {
+      color: black;
+      padding: 10px 15px;
+      text-decoration: none;
+      display: block;
+    }
+    span.icon {
+      margin-right: 5px;
+      background-color: $main-color;
+      font-size: $control-size;
+    }
+  }
+}
+
+.user-avatar {
+  text-align: center;
+
+  &__edit {
+    @include circle-with-span($mask-bg-color, 130px, $white-color, 50px);
+    position: absolute;
+    z-index: 1000;
+    opacity: 0;
+    transition: $fast-transition;
+
+    &:hover {
+      opacity: 1;
+      cursor: pointer;
+    }
+  }
+}
+.initial-avatar {
+  @include circle-with-span($alt-bg-color, 130px, $alt-color, 50px);
+}
+
+.input-file {
+  font-size: $control-size;
+  text-align: center;
+  position: relative;
+  display: inline-block;
+
+  &_selected span {
+    text-decoration: none !important;
+    color: $alt-color !important;
+  }
+
+  span {
+    color: $main-color;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  input[type=file] {
+    position: absolute;
+    z-index: -1;
+    opacity: 0;
+    display: block;
+    width: 0;
+    height: 0;
+  }
+}
+
+/*
+ * Страницы ошибок
+ */
+
+.page-error {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  &__title {
+    margin-bottom: 20px;
+  }
+  &__description {
+    margin-bottom: 60px;
+  }
+  &__go-back { }
+}
+
+/*
+ * Модальное окно
+ */
+
+.modal {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  z-index: 9000;
+  top: 0;
+  left: 0;
+  background-color: $mask-bg-color;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  visibility: hidden;
+  pointer-events: none;
+
+  &_show, &:target {
+    visibility: visible;
+    pointer-events: auto;
+  }
+}
+.modal-dialog {
+  max-width: 440px;
+  width: 100%;
+  max-height: 100%;
+  height: fit-content;
+  background-color: $white-color;
+  padding: 50px 30px 30px;
+  position: relative;
+  overflow-y: auto;
+  border-radius: $main-radius;
+
+  &__close {
+    float: right;
+    font-size: $title-size;
+
+    .icon {
+      background-color: $alt-color;
+    }
+  }
+  &__header {
+    text-align: center;
+
+    &_error {
+      color: $error-color;
+    }
+  }
+  &__header > hr {
+    margin: 20px 0;
+  }
+  &__content {
+
+  }
+  &__info {
+    margin: 15px 0 0;
+    text-align: center;
+
+    &_error {
+      color: $error-color;
+    }
+  }
+}
+
+/*
+ * Иконки сайта
+ */
+
+.icon {
+  width: 1.2em;
+  height: 1.2em;
+  display: inline-block;
+  align-self: center;
+  vertical-align: middle;
+  margin-top: -0.1em;
+  background-color: $black-color;
+
+  &_chats { @include svg-icon('../images/icons/chats.svg'); }
+  &_user-add { @include svg-icon('../images/icons/user-add.svg'); }
+  &_user-remove { @include svg-icon('../images/icons/user-remove.svg'); }
+  &_trash { @include svg-icon('../images/icons/trash.svg'); }
+  &_link { @include svg-icon('../images/icons/link.svg'); }
+  &_menu { @include svg-icon('../images/icons/dots-vertical.svg'); }
+  &_navigation { @include svg-icon('../images/icons/navigation.svg'); }
+  &_verified { @include svg-icon('../images/icons/verified.svg'); }
+  &_image { @include svg-icon('../images/icons/image.svg'); }
+  &_document { @include svg-icon('../images/icons/document.svg'); }
+  &_user { @include svg-icon('../images/icons/user.svg'); }
+  &_go-back { @include svg-icon('../images/icons/arrow-go-back.svg'); }
+  &_next { @include svg-icon('../images/icons/chevron-right.svg'); }
+  &_close { @include svg-icon('../images/icons/times.svg'); }
+  &_search { @include svg-icon('../images/icons/search.svg'); }
+  &_location { @include svg-icon('../images/icons/location.svg'); }
+}
