@@ -8,7 +8,7 @@
     "color-hex-length": "long",
     "at-rule-no-unknown": null,
     "scss/at-rule-no-unknown": true,
-    "scss/dollar-variable-pattern": "^[a-z-]+(color|size|radius|transition)$",
+    "scss/dollar-variable-pattern": "^[a-z-]+(path|color|size|radius|transition)$",
     "scss/selector-no-redundant-nesting-selector": true,
     "declaration-empty-line-before": null,
     "rule-empty-line-before": null,
