@@ -1,6 +1,5 @@
 window.onclick = function(event) {
     // когда пользователь нажимает на внешнюю область модального окна
-    console.log(event.relatedTarget.classList);
     if (event.target.classList.contains('modal_closable')) {
         for (let el of document.getElementsByClassName('modal_closable')) {
             // удалить класс отображения и сбросить якорь модального окна
