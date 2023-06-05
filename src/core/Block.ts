@@ -93,7 +93,7 @@ export default class Block {
   private _componentDidUpdate(oldProps: TProps, newProps: TProps): void {
     const response = this.componentDidUpdate(oldProps, newProps);
     if (!response) return;
-    this._render();
+    this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

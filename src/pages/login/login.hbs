@@ -5,10 +5,10 @@
             <hr>
         </div>
         <div class="modal-dialog__content">
-            <form class="form" action="#" method="get">
+            <form class="form" onsubmit="return false">
                 {{{_formFields}}}
                 <div class="form__submit">
-                    <button type="submit">Войти</button>
+                    {{{_formButtons}}}
                 </div>
             </form>
         </div>

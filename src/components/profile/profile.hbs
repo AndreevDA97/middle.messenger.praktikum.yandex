@@ -1,0 +1,38 @@
+<main class="user-profile">
+    <div class="user-profile__avatar">
+        <div class="user-avatar">
+            {{#unless editMode}}
+                <div class="user-avatar__edit">
+                    <span>Поменять<br>аватар</span>
+                </div>
+            {{/unless}}
+            <div class="initial-avatar">
+                <span class="icon icon_user"></span>
+            </div>
+        </div>
+        {{#unless editMode}}
+            <div class="user-profile__display-name">
+                <span>{{displayName}}</span>
+            </div>
+        {{/unless}}
+    </div>
+    <div class="user-profile__form">
+        <form class="form-horizontal" onsubmit="return false">
+            {{{_formFields}}}
+            {{#if editMode}}
+                <div class="form__submit">
+                    {{{_formButtons}}}
+                </div>
+            {{/if}}
+        </form>
+    </div>
+    {{#unless editMode}}
+        <nav class="user-profile__links">
+            <a class="user-profile__link" href="user-edit.hbs">Изменить данные</a>
+            <hr>
+            <a class="user-profile__link" href="user-password-edit.hbs">Изменить пароль</a>
+            <hr>
+            <a class="user-profile__link user-profile__link_exit" href="index.hbs">Выйти</a>
+        </nav>
+    {{/unless}}
+</main>

@@ -1,16 +1,18 @@
-import Block from './core/Block';
-import renderDOM from './core/utils/renderDOM';
 // import HTTPTransport from '../../classes/HTTPTransport';
+import renderDOM from './core/utils/renderDOM';
+// импорт всех страниц веб-чата
 import MainPage from './pages/main/main';
 import ErrorPage from './pages/error/error';
 import LoginPage from './pages/login/login';
 import RegisterPage from './pages/register/register';
+import UserPage from './pages/user/user';
+import ChatPage from './pages/chat/chat';
 
 window.addEventListener('DOMContentLoaded', () => {
   // главная страница
   const mainPage = new MainPage({
     title: 'Яндекс Практикум (Спринт 2) - Главная',
-    description: 'Просмотр макета веб-чата осуществляется по ссылкам ниже, возврат на главную с помощью навигации браузера',
+    description: 'Просмотр компонентов веб-чата осуществляется по ссылкам ниже, возврат на главную с помощью навигации браузера',
     debug: true,
   });
   // страница ошибки 404
@@ -29,9 +31,9 @@ window.addEventListener('DOMContentLoaded', () => {
   // страница регистрации
   const registerPage = new RegisterPage();
   // страница чата
-  const chatPage = new Block();
+  const chatPage = new ChatPage();
   // страница пользователя
-  const userPage = new Block();
+  const userPage = new UserPage();
 
   // маршрутизация по адресу в рамках SPA
   switch (window.location.pathname) {

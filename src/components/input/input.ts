@@ -1,6 +1,11 @@
-import template from './input.hbs';
+import templateDefault from './input.hbs';
+import templateProfile from './input-profile.hbs';
 import Block from '../../core/Block';
 
+export enum InputTemplate {
+  Default,
+  Profile
+}
 export enum InputType {
   Text = 'text',
   Password = 'password',
@@ -11,9 +16,11 @@ export type TInput = {
   type?: InputType,
   name: string,
   value: string,
+  editMode?: boolean,
   errorMsg?: string,
   check?: (value: string) => string,
-  events?: Record<string, Function>
+  events?: Record<string, Function>,
+  template?: InputTemplate 
 };
 export default class Input extends Block {
   constructor(props: TInput) {
@@ -33,7 +40,9 @@ export default class Input extends Block {
         },
       },
     };
-    super('div', nextProps, template);
+    const templator = props.template == InputTemplate.Profile
+      ? templateProfile : templateDefault;
+    super('div', nextProps, templator);
   }
 
   componentDidUpdate(oldProps: TInput, newProps: TInput): boolean {
