@@ -1,4 +1,4 @@
-@import url('../fonts/inter/inter.css');
+@import '../fonts/inter/inter.css';
 @import 'minireset';
 @import 'variables';
 
@@ -74,10 +74,6 @@ button {
     min-width: 310px;
     background-color: $sidebar-bg-color;
     border-right: 1px solid $border-color;
-
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
   }
   &__go-back {
     flex-basis: 64px;
@@ -97,12 +93,18 @@ button {
   }
 }
 
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  height: 100%;
+}
 .sidebar-header {
   flex-basis: 102px;
   padding: 10px 10px 0;
 
   hr {
-    margin: 14px 0 0px;
+    margin: 14px 0 0;
   }
 }
 .sidebar-header-status {
@@ -177,13 +179,13 @@ button {
   input:focus, input:not(:placeholder-shown) {
     outline: none;
   }
-  input:focus::placeholder {
-    color: transparent;
-  }
   input::placeholder {
     text-align: center;
     color: $alt-color;
     transition: color $slow-transition;
+  }
+  input:focus::placeholder {
+    color: transparent;
   }
 }
 .sidebar-contacts {
@@ -238,7 +240,7 @@ button {
     white-space: pre-wrap;
     text-overflow: ellipsis;
 
-    &_owner:before {
+    &_owner::before {
       color: $black-color;
       content: 'Вы: ';
     }
@@ -403,22 +405,20 @@ button {
   &_owner {
     background-color: $main-bg-color;
     border-bottom-right-radius: 0;
-
-    .chat-message__status {
-      text-align: right;
-      font-size: $tag-size;
-      color: $main-color;
-    }
+  }
+  &_owner &__status {
+    text-align: right;
+    font-size: $tag-size;
+    color: $main-color;
   }
   &_chatter {
     background-color: $alt-bg-color;
     border-top-left-radius: 0;
-
-    .chat-message__status {
-      text-align: right;
-      font-size: $tag-size;
-      color: $alt-color;
-    }
+  }
+  &_chatter &__status {
+    text-align: right;
+    font-size: $tag-size;
+    color: $alt-color;
   }
 
   &__text {
@@ -448,9 +448,6 @@ button {
     margin: 0 5px;
 
     input {
-      width: 100%;
-    }
-    input {
       @include use-ext-font;
       width: 100%;
       border-radius: $input-radius;
@@ -461,12 +458,12 @@ button {
     input:focus, input:not(:placeholder-shown) {
       outline: none;
     }
-    input:focus::placeholder {
-      color: transparent;
-    }
     input::placeholder {
       color: $alt-color;
       transition: color $slow-transition;
+    }
+    input:focus::placeholder {
+      color: transparent;
     }
   }
   &__send {
@@ -591,7 +588,7 @@ button {
     width: 100%;
     border: none;
     border-bottom: 1px solid $main-color;
-    padding: 0 0 7px 0;
+    padding: 0 0 7px;
     font-size: $control-size;
     background-color: transparent;
 
@@ -605,12 +602,12 @@ button {
   &__input:focus, &__input:not(:placeholder-shown) {
     outline: none;
   }
-  &__input:focus::placeholder {
-    color: transparent;
-  }
   &__input::placeholder {
     color: $alt-color;
     transition: $slow-transition;
+  }
+  &__input:focus::placeholder {
+    color: transparent;
   }
 
   &__submit {
@@ -651,7 +648,7 @@ button {
     padding: 5px 0;
     border-radius: $main-radius;
     background-color: $white-color;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    box-shadow: 0 8px 16px 0 rgb(0 0 0 / 20%);
     font-size: $text-size;
     font-weight: 600;
 
@@ -714,7 +711,7 @@ button {
     text-decoration: underline;
     cursor: pointer;
   }
-  input[type=file] {
+  input[type="file"] {
     position: absolute;
     z-index: -1;
     opacity: 0;
@@ -741,7 +738,6 @@ button {
   &__description {
     margin-bottom: 60px;
   }
-  &__go-back { }
 }
 
 /*
@@ -797,9 +793,6 @@ button {
   }
   &__header > hr {
     margin: 20px 0;
-  }
-  &__content {
-
   }
   &__info {
     margin: 15px 0 0;
