@@ -20,18 +20,18 @@ profile: false
 ---
 {{> _header}}
     <div class="chat-container">
-        <aside class="chat-container__sidebar">
+        <div class="chat-container__sidebar">
             {{> sidebar contacts=contacts search=search profile=profile}}
-        </aside>
-        <main class="chat-container__window">
-            <div class="chat-welcome">
+        </div>
+        <div class="chat-container__window">
+            <main class="chat-welcome">
                 <div class="chat-welcome__logo">
                     <span class="icon icon_chats"></span>
                 </div>
                 <div class="chat-welcome__message">
                     <span>{{message}}</span>
                 </div>
-            </div>
-        </main>
+            </main>
+        </div>
     </div>
 {{> _footer}}
