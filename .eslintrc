@@ -11,6 +11,7 @@
     // NOTE: переопределить по необходимости
     "newline-per-chained-call": "error",
     "no-underscore-dangle": "off",
-    "no-trailing-spaces": "off"
+    "no-trailing-spaces": "off",
+    "object-curly-newline": "off"
   }
 }

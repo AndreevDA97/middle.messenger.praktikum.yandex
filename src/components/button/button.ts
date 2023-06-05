@@ -3,7 +3,7 @@ import Block from '../../core/Block';
 
 export enum ButtonType {
   Button = 'button',
-  Submit = 'submit'
+  Submit = 'submit',
 }
 export type TButton = {
   title: string,
@@ -11,7 +11,6 @@ export type TButton = {
   events?: Record<string, Function>
 };
 export default class Button extends Block {
-  
   constructor(props: TButton) {
     const nextProps = {
       ...props,

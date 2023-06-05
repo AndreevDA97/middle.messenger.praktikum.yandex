@@ -10,23 +10,23 @@ type TUserPage = {
 export default class UserPage extends Block {
   constructor(props: TUserPage = {}) {
     const profile = new Profile({
-        action: ProfileAction.UserEdit,
-        displayName: 'Иван',
-        editMode: true
+      action: ProfileAction.UserEdit,
+      displayName: 'Иван',
+      editMode: true,
     });
     const avatarEditModal = new FileModal({
-        showModal: false,
-        dialogId: 'user-avatar-edit',
-        title: 'Загрузите файл',
-        titleError: '',
-        fileText: 'Выбрать файл на<br>компьютере',
-        fileError: '',
-        submitText: 'Поменять'
+      showModal: false,
+      dialogId: 'user-avatar-edit',
+      title: 'Загрузите файл',
+      titleError: '',
+      fileText: 'Выбрать файл на<br>компьютере',
+      fileError: '',
+      submitText: 'Поменять',
     });
     const nextProps: any = {
       ...props,
       profile,
-      avatarEditModal
+      avatarEditModal,
     };
     nextProps._profile = `<div data-id="${profile.props._id}"></div>`;
     nextProps._avatarEditModal = `<div data-id="${avatarEditModal.props._id}"></div>`;

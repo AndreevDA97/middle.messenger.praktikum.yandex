@@ -33,26 +33,25 @@ export default class LoginPage extends Block {
       type: ButtonType.Submit,
       events: {
         click: () => {
-          const inputs = Object.values(this.children)
-            .filter(child => child instanceof Input);
-          if (inputs.some(child => child.props.errorMsg))
-          {
+          const childInputs = Object.values(this.children)
+            .filter((child) => child instanceof Input);
+          if (childInputs.some((child) => child.props.errorMsg)) {
             console.error('Некорректный ввод данных');
             return; // не пропускать некорректный ввод
           }
           // собрать данные из полей формы
           const data: Record<string, string> = {};
-          inputs.forEach(child => {
-              data[child.props.name] = String(child.props.value);
+          childInputs.forEach((child) => {
+            data[child.props.name] = String(child.props.value);
           });
           console.log(data);
-        }
-      }
+        },
+      },
     });
     const nextProps = {
       ...props,
       ...inputs,
-      button
+      button,
     };
     nextProps._formFields = '';
     Object.values(inputs).forEach((input: Block) => {

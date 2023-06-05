@@ -31,7 +31,7 @@ window.addEventListener('DOMContentLoaded', () => {
   // страница регистрации
   const registerPage = new RegisterPage();
   // страница чата
-  const chatPage = new ChatPage();
+  const chatPage = new ChatPage({ welcome: false });
   // страница пользователя
   const userPage = new UserPage();
 

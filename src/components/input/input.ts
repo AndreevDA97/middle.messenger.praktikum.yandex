@@ -4,7 +4,7 @@ import Block from '../../core/Block';
 
 export enum InputTemplate {
   Default,
-  Profile
+  Profile,
 }
 export enum InputType {
   Text = 'text',
