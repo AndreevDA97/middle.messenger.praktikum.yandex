@@ -1,0 +1,16 @@
+{
+  "extends": ["airbnb", "airbnb-typescript"],
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "@typescript-eslint"
+  ],
+  "parserOptions": {
+    "project": ["tsconfig.json"]
+  },
+  "rules": {
+    // NOTE: переопределить по необходимости
+    "newline-per-chained-call": "error",
+    "no-underscore-dangle": "off",
+    "no-trailing-spaces": "off"
+  }
+}
