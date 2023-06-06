@@ -10,7 +10,7 @@ $alt-bg-color: #EFEFEF; // фон дополнительного цвета
 
 $btn-active-color: #F8F8F8; // бледный фон дополнительного цвета
 $sidebar-bg-color: #FBFBFB; // фон сайдбара
-$mask-bg-color: rgba(0, 0, 0, 0.4); // фон затемнения
+$mask-bg-color: rgb(0 0 0 / 40%); // фон затемнения
 
 $border-color: #EAEAEA; // цвет обводки и линии
 $black-color: #1E1E1E; // черный цвет
@@ -48,7 +48,7 @@ $slow-transition: 0.3s;
 // подключение шрифта
 @mixin use-ext-font {
   font-display: block;
-  font-family: 'Inter';
+  font-family: Inter, sans-serif;
   font-style: normal;
   font-weight: 500;
 }

@@ -1,0 +1,12 @@
+<div class="form__group">
+    <input class="form__input {{#if errorMsg}}form__input_error{{/if}}"
+           type="{{#if type}}{{type}}{{else}}text{{/if}}"
+           placeholder="{{title}}"
+           name="{{name}}"
+           value="{{value}}">
+
+    <label class="form__label" for="{{name}}">{{title}}</label>
+    {{#if errorMsg}}
+        <label class="form__error">{{errorMsg}}</label>
+    {{/if}}
+</div>

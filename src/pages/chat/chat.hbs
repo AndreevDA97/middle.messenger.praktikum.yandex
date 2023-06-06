@@ -1,0 +1,20 @@
+<div class="chat-container">
+    <div class="chat-container__sidebar">
+        {{{_sidebar}}}
+    </div>
+    <div class="chat-container__window">
+        {{#if welcome}}
+        <main class="chat-welcome">
+            <div class="chat-welcome__logo">
+                <span class="icon icon_chats"></span>
+            </div>
+            <div class="chat-welcome__message">
+                <span>Выберите чат чтобы отправить сообщение</span>
+            </div>
+        </main>
+        {{else}}
+            {{{_chatDialog}}}
+        {{/if}}
+    </div>
+</div>
+{{{_chatAddModal}}}
