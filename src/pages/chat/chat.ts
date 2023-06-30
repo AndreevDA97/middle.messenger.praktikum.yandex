@@ -4,14 +4,16 @@ import Sidebar from '../../components/sidebar/sidebar';
 import ChatDialog, { MsgType, SenderType } from '../../components/chat-dialog/chat-dialog';
 import UserModal from '../../components/user-modal/user-modal';
 import chatterPhoto from '../../../static/images/chatter_photo.png';
+import { withStore } from '../../core/utils/withStore';
+import { withRouter } from '../../core/utils/withRouter';
 
 type TChatPage = {
   welcome: boolean,
-  _sidebar?: string,
-  _chatDialog?: string,
-  _chatAddModal?: string
+  _sidebar?: Sidebar,
+  _chatDialog?: ChatDialog,
+  _chatAddModal?: UserModal
 };
-export default class ChatPage extends Block {
+class ChatPage extends Block {
   constructor(props: TChatPage) {
     const sidebar = new Sidebar({
       contacts: [
@@ -54,13 +56,23 @@ export default class ChatPage extends Block {
       chatDialog,
       chatAddModal,
     };
-    nextProps._sidebar = `<div data-id="${sidebar.props._id}"></div>`;
-    nextProps._chatDialog = `<div data-id="${chatDialog.props._id}"></div>`;
-    nextProps._chatAddModal = `<div data-id="${chatAddModal.props._id}"></div>`;
+    nextProps._sidebar = sidebar;
+    nextProps._chatDialog = chatDialog;
+    nextProps._chatAddModal = chatAddModal;
     super('div', nextProps, template);
+  }
+
+  componentDidMount() {
+    setTimeout(window.additionalEffects.create, 100);
+  }
+
+  componentWillUnmount() {
+    window.additionalEffects.clear();
   }
 
   render() {
     return this.compile(this.props);
   }
 }
+
+export default withRouter(withStore(ChatPage));

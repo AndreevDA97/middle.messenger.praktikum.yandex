@@ -18,21 +18,23 @@
     </div>
     <div class="user-profile__form">
         <form class="form-horizontal" onsubmit="return false">
-            {{{_formFields}}}
+            {{#each _formFields}}
+                {{{lookup ../this @key}}}
+            {{/each}}
             {{#if editMode}}
                 <div class="form__submit">
-                    {{{_formButtons}}}
+                    {{{_formButton}}}
                 </div>
             {{/if}}
         </form>
     </div>
     {{#unless editMode}}
         <nav class="user-profile__links">
-            <a class="user-profile__link" href="user-edit.hbs">Изменить данные</a>
+            <a class="user-profile__link" href="/user/edit">Изменить данные</a>
             <hr>
-            <a class="user-profile__link" href="user-password-edit.hbs">Изменить пароль</a>
+            <a class="user-profile__link" href="/user/password/edit">Изменить пароль</a>
             <hr>
-            <a class="user-profile__link user-profile__link_exit" href="index.hbs">Выйти</a>
+            <a class="user-profile__link user-profile__link_exit" href="/logout">Выйти</a>
         </nav>
     {{/unless}}
 </main>

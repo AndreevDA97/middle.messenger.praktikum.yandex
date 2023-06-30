@@ -1,3 +1,5 @@
+import { queryStringify } from './utils/extensions';
+
 enum METHODS {
   GET = 'GET',
   POST = 'POST',
@@ -14,18 +16,6 @@ type TOptions = {
 };
 type HTTPMethod = (url: string, options?: TOptions) => Promise<unknown>;
 type HTTPRequest = (url: string, options?: TOptions, timeout?: number) => Promise<unknown | void>;
-
-function queryStringify(data: TOptionsData): string {
-  if (typeof data !== 'object') {
-    throw new Error('Поле data должно быть object');
-  }
-
-  const queryParams = Object.entries(data)
-    .map(([key, value]) => `${key}=${value}`)
-    .join('&');
-
-  return queryParams.length ? `?${queryParams}` : '';
-}
 
 export default class HTTPTransport {
   static get: HTTPMethod = (url = '', options = {}) => (
@@ -62,7 +52,7 @@ export default class HTTPTransport {
         xhr.setRequestHeader(key, headers[key]);
       });
 
-      xhr.onload = function () {
+      xhr.onload = () => {
         resolve(xhr);
       };
 

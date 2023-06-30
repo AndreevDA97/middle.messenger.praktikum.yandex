@@ -13,6 +13,8 @@ type TProfile = {
   action: ProfileAction,
   displayName: string,
   editMode: boolean,
+  _formFields?: Record<string, Input>,
+  _formButton?: Button
 };
 export default class Profile extends Block {
   constructor(props: TProfile) {
@@ -81,15 +83,35 @@ export default class Profile extends Block {
       };
     } else if (props.action === ProfileAction.PasswordEdit) {
       formFields = {
-        emailInput: new Input({
-          title: 'Почта',
-          name: 'email',
-          type: InputType.Text,
+        oldPasswordInput: new Input({
+          title: 'Старый пароль',
+          name: 'oldPassword',
+          type: InputType.Password,
           template: InputTemplate.Profile,
-          value: 'pochta@mail.ru',
+          value: 'qwerty1234',
           editMode: props.editMode,
-          check: (value) => (validate(RegexRules.EMAIL_REGEX, value)
-            ? '' : 'Ошибка ввода почты'),
+          check: (value) => (validate(RegexRules.PASSWORD_REGEX, value)
+            ? '' : 'Ошибка ввода пароля'),
+        }),
+        newPasswordAttemptInput: new Input({
+          title: 'Новый пароль',
+          name: 'newPasswordAttempt',
+          type: InputType.Password,
+          template: InputTemplate.Profile,
+          value: 'qwerty1234',
+          editMode: props.editMode,
+          check: (value) => (validate(RegexRules.PASSWORD_REGEX, value)
+            ? '' : 'Ошибка ввода пароля'),
+        }),
+        newPasswordInput: new Input({
+          title: 'Повторите новый пароль',
+          name: 'newPassword',
+          type: InputType.Password,
+          template: InputTemplate.Profile,
+          value: 'qwerty',
+          editMode: props.editMode,
+          check: (value) => (validate(RegexRules.PASSWORD_REGEX, value)
+            ? '' : 'Ошибка ввода пароля'),
         }),
       };
     }
@@ -118,11 +140,8 @@ export default class Profile extends Block {
       ...formFields,
       button,
     };
-    nextProps._formFields = '';
-    Object.values(formFields).forEach((input: Block) => {
-      nextProps._formFields += `<div data-id="${input.props._id}"></div>`;
-    });
-    nextProps._formButtons = `<div data-id="${button.props._id}"></div>`;
+    nextProps._formFields = formFields;
+    nextProps._formButton = button;
     super('div', nextProps, template);
   }
 

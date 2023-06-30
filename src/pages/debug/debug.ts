@@ -1,15 +1,17 @@
-import template from './main.hbs';
+import template from './debug.hbs';
 import templateDebug from '../../partials/_debug.hbs';
 import Block, { TProps } from '../../core/Block';
+import { withStore } from '../../core/utils/withStore';
+import { withRouter } from '../../core/utils/withRouter';
 
-type TMainPage = {
+type TDebugPage = {
   title: string,
   description: string,
   debug: boolean,
   _debug?: string
 };
-export default class MainPage extends Block {
-  constructor(props: TMainPage) {
+class DebugPage extends Block {
+  constructor(props: TDebugPage) {
     const nextProps = {
       ...props,
     };
@@ -26,3 +28,5 @@ export default class MainPage extends Block {
     return this.compile(this.props);
   }
 }
+
+export default withRouter(withStore(DebugPage));

@@ -2,15 +2,17 @@ import template from './user.hbs';
 import Block from '../../core/Block';
 import Profile, { ProfileAction } from '../../components/profile/profile';
 import FileModal from '../../components/file-modal/file-modal';
+import { withStore } from '../../core/utils/withStore';
+import { withRouter } from '../../core/utils/withRouter';
 
 type TUserPage = {
-  _profile?: string,
-  _avatarEditModal?: string
+  _profile?: Profile,
+  _avatarEditModal?: FileModal
 };
-export default class UserPage extends Block {
+class UserPage extends Block {
   constructor(props: TUserPage = {}) {
     const profile = new Profile({
-      action: ProfileAction.UserEdit,
+      action: ProfileAction.PasswordEdit,
       displayName: 'Иван',
       editMode: true,
     });
@@ -28,12 +30,27 @@ export default class UserPage extends Block {
       profile,
       avatarEditModal,
     };
-    nextProps._profile = `<div data-id="${profile.props._id}"></div>`;
-    nextProps._avatarEditModal = `<div data-id="${avatarEditModal.props._id}"></div>`;
+    nextProps._profile = profile;
+    nextProps._avatarEditModal = avatarEditModal;
+    console.log(props);
     super('div', nextProps, template);
+  }
+
+  componentDidMount() {
+    setTimeout(() => {
+      const backElement = document.getElementById('go-back');
+      backElement!.onclick = () => { this.props.router.back(); };
+      window.additionalEffects.create();
+    }, 100);
+  }
+
+  componentWillUnmount() {
+    window.additionalEffects.clear();
   }
 
   render() {
     return this.compile(this.props);
   }
 }
+
+export default withRouter(withStore(UserPage));

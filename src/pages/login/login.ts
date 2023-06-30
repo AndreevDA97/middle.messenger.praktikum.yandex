@@ -3,12 +3,14 @@ import Block from '../../core/Block';
 import Input, { InputType } from '../../components/input/input';
 import Button, { ButtonType } from '../../components/button/button';
 import validate, { RegexRules } from '../../core/utils/validateInput';
+import { withStore } from '../../core/utils/withStore';
+import { withRouter } from '../../core/utils/withRouter';
 
 type TLoginPage = {
-  _formFields?: string,
-  _formButtons?: string
+  _formFields?: Record<string, Input>,
+  _formButton?: Button
 };
-export default class LoginPage extends Block {
+class LoginPage extends Block {
   constructor(props: TLoginPage = {}) {
     const inputs: Record<string, Input> = {
       loginInput: new Input({
@@ -53,11 +55,8 @@ export default class LoginPage extends Block {
       ...inputs,
       button,
     };
-    nextProps._formFields = '';
-    Object.values(inputs).forEach((input: Block) => {
-      nextProps._formFields += `<div data-id="${input.props._id}"></div>`;
-    });
-    nextProps._formButtons = `<div data-id="${button.props._id}"></div>`;
+    nextProps._formFields = inputs;
+    nextProps._formButton = button;
     super('div', nextProps, template);
   }
 
@@ -65,3 +64,5 @@ export default class LoginPage extends Block {
     return this.compile(this.props);
   }
 }
+
+export default withRouter(withStore(LoginPage));
