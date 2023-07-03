@@ -6,9 +6,13 @@
                     <span>Поменять<br>аватар</span>
                 </div>
             {{/unless}}
-            <div class="initial-avatar">
-                <span class="icon icon_user"></span>
-            </div>
+            {{#if avatarSrc}}
+                <img class="initial-avatar" src="{{avatarSrc}}" alt="Изображение пользователя">
+            {{else}}
+                <div class="initial-avatar">
+                    <span class="icon icon_user"></span>
+                </div>
+            {{/if}}
         </div>
         {{#unless editMode}}
             <div class="user-profile__display-name">

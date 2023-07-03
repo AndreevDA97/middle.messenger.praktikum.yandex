@@ -1,7 +1,7 @@
 import { BlockClass } from '../Block';
 import Router, { rootRouter } from '../Router';
 
-type WithRouterProps = { router?: Router };
+export type WithRouterProps = { router?: Router };
 
 // eslint-disable-next-line import/prefer-default-export
 export function withRouter<P extends WithRouterProps>(WrappedBlock: BlockClass<P>) {

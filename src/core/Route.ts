@@ -30,6 +30,8 @@ export default class Route {
 
   private _onUnautorized: any;
 
+  private _onAutorized: any;
+
   private _redirect: () => void;
 
   constructor(
@@ -40,6 +42,7 @@ export default class Route {
     needAuth: boolean = false,
     notFound: boolean = false,
     onUnautorized?: () => boolean,
+    onAutorized?: () => boolean,
     redirect: () => void = () => {},
   ) {
     this._pathname = pathname;
@@ -49,6 +52,7 @@ export default class Route {
     this._needAuth = needAuth;
     this._notFound = notFound;
     this._onUnautorized = onUnautorized;
+    this._onAutorized = onAutorized;
     this._params = this.getParams();
     this._redirect = redirect;
   }
@@ -85,6 +89,8 @@ export default class Route {
       if (typeof this._onUnautorized === 'function') {
         return this._onUnautorized(this._pathname);
       }
+    } else if (typeof this._onAutorized === 'function') {
+      return !this._onAutorized(this._pathname);
     }
     return true;
   }

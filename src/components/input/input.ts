@@ -16,6 +16,7 @@ export type TInput = {
   type?: InputType,
   name: string,
   value: string,
+  placeholder?: string,
   editMode?: boolean,
   errorMsg?: string,
   check?: (value: string) => string,
@@ -40,7 +41,7 @@ export default class Input extends Block {
         },
       },
     };
-    const templator = props.template == InputTemplate.Profile
+    const templator = props.template === InputTemplate.Profile
       ? templateProfile : templateDefault;
     super('div', nextProps, templator);
   }

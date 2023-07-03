@@ -35,6 +35,8 @@ window.addEventListener('DOMContentLoaded', () => {
             block: LoginPage,
             props: {},
             needAuth: false,
+            onAutorized: () => rootStore.getState().isAuth,
+            redirectPath: RoutePath.Chat,
           })
           // страница регистрации
           .use({
@@ -43,6 +45,8 @@ window.addEventListener('DOMContentLoaded', () => {
             block: RegisterPage,
             props: {},
             needAuth: false,
+            onAutorized: () => rootStore.getState().isAuth,
+            redirectPath: RoutePath.Chat,
           })
           // страница чата
           .use({
@@ -53,8 +57,8 @@ window.addEventListener('DOMContentLoaded', () => {
               welcome: false,
             },
             needAuth: true,
-            redirectPath: '/',
             onUnautorized: () => rootStore.getState().isAuth,
+            redirectPath: RoutePath.Login,
           })
           // страница пользователя
           .use({
@@ -63,8 +67,8 @@ window.addEventListener('DOMContentLoaded', () => {
             block: UserPage,
             props: {},
             needAuth: true,
-            redirectPath: '/',
             onUnautorized: () => rootStore.getState().isAuth,
+            redirectPath: RoutePath.Login,
           })
           // отладочная страница
           .use({
@@ -77,8 +81,8 @@ window.addEventListener('DOMContentLoaded', () => {
               debug: true,
             },
             needAuth: true,
-            redirectPath: '/',
             onUnautorized: () => rootStore.getState().isAuth,
+            redirectPath: RoutePath.Login,
           })
           // страница ошибки 404
           .use({

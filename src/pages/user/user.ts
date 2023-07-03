@@ -2,18 +2,21 @@ import template from './user.hbs';
 import Block from '../../core/Block';
 import Profile, { ProfileAction } from '../../components/profile/profile';
 import FileModal from '../../components/file-modal/file-modal';
-import { withStore } from '../../core/utils/withStore';
-import { withRouter } from '../../core/utils/withRouter';
-import { rootRouter } from '../../core/Router';
+import { withStore, WithStateProps } from '../../core/utils/withStore';
+import { withRouter, WithRouterProps } from '../../core/utils/withRouter';
 import AuthController from '../../controllers/AuthController';
+import UserController from '../../controllers/UserController';
 
-type TUserPage = {
+interface TUserPage extends WithRouterProps, WithStateProps {
   _profile?: Profile,
   _avatarEditModal?: FileModal
-};
+}
 class UserPage extends Block {
   constructor(props: TUserPage = {}) {
-    const route = rootRouter.getCurrentRoute();
+    if (!props.router || !props.store) {
+      throw new Error('Ошибка инициализации');
+    }
+    const route = props.router.getCurrentRoute();
     let profileAction = ProfileAction.Profile;
     switch (route.getFullPath()) {
       case '/settings/logout':
@@ -23,9 +26,11 @@ class UserPage extends Block {
       case '/settings/password/edit': profileAction = ProfileAction.PasswordEdit; break;
       default:
     }
+    const user = props.store.getState().user || {};
     const profile = new Profile({
       action: profileAction,
-      displayName: 'Иван',
+      displayName: (user.login || user.display_name) as string,
+      avatarSrc: UserController.getAvatarSrc(user.avatar as string),
     });
     const avatarEditModal = new FileModal({
       showModal: false,
@@ -46,9 +51,9 @@ class UserPage extends Block {
     super('div', nextProps, template);
   }
 
-  componentDidMount() {
+  render() {
     setTimeout(() => {
-      const route = rootRouter.getCurrentRoute();
+      const route = this.props.router.getCurrentRoute();
       const backElement = document.getElementById('go-back');
       backElement!.onclick = () => {
         switch (route.getFullPath()) {
@@ -57,15 +62,9 @@ class UserPage extends Block {
           default: this.props.router.go('/messenger'); break;
         }
       };
+      window.additionalEffects.clear();
       window.additionalEffects.create();
     }, 100);
-  }
-
-  componentWillUnmount() {
-    window.additionalEffects.clear();
-  }
-
-  render() {
     return this.compile(this.props);
   }
 }

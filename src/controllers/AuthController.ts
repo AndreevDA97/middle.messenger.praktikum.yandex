@@ -2,7 +2,7 @@ import BaseController from './BaseController';
 import { TOptionsData } from '../core/HTTPTransport';
 import { RoutePath } from '../core/utils/configuration';
 import authApi from '../services/AuthApi';
-import { defaultState } from '../core/Store';
+import { getDefaultState } from '../core/Store';
 
 class AuthController extends BaseController {
   public async register(data: TOptionsData): Promise<void> {
@@ -62,8 +62,8 @@ class AuthController extends BaseController {
     try {
       const { status, response } = await authApi.logout();
       if (status === 200) {
-        this.store.set(defaultState);
-        this.router.go('/');
+        this.store.set(getDefaultState());
+        this.router.go(RoutePath.Login);
       } else if (status === 500) {
         this.router.go(RoutePath.Error_500);
       } else {

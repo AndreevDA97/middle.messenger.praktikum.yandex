@@ -1,7 +1,7 @@
 import { BlockClass } from '../Block';
 import { Store, AppState, StoreEvents, rootStore } from '../Store';
 
-type WithStateProps = { store?: Store<AppState> };
+export type WithStateProps = { store?: Store<AppState> };
 
 // eslint-disable-next-line import/prefer-default-export
 export function withStore<P extends WithStateProps>(WrappedBlock: BlockClass<P>) {

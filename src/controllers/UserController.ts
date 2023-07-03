@@ -11,6 +11,7 @@ class UserController extends BaseController {
       if (status === 200) {
         alert('Изменения в профиль внесены!');
         this.store.set({ user: JSON.parse(response) });
+        this.router.go(RoutePath.User);
       } else if (status === 500) {
         this.router.go(RoutePath.Error_500);
       } else {
@@ -27,6 +28,7 @@ class UserController extends BaseController {
       if (status === 200) {
         alert('Пароль изменен!');
         this.store.set({});
+        this.router.go(RoutePath.User);
       } else if (status === 500) {
         this.router.go(RoutePath.Error_500);
       } else {
@@ -69,6 +71,11 @@ class UserController extends BaseController {
     } catch (e) {
       console.log(e);
     }
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  public getAvatarSrc(path: string):string {
+    return `${UserApi.baseUrl}/resources/${path}`;
   }
 }
 

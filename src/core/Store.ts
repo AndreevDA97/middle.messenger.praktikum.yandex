@@ -1,18 +1,21 @@
 import EventBus from './EventBus';
 import { cloneDeep, merge } from './utils/extensions';
 
-export const defaultState: AppState = {
-  isAppInit: false,
-  isLoading: false,
-  isAuth: false,
-  user: null,
-  chats: null,
-  loginError: null,
-  registerError: null,
-  userEditError: null,
-  userPasswordEditError: null,
-  userAvatarEditError: null,
-};
+export function getDefaultState(): AppState {
+  return {
+    isAppInit: false,
+    isLoading: false,
+    isAuth: false,
+    user: null,
+    chats: null,
+    loginError: null,
+    registerError: null,
+    userEditError: null,
+    userPasswordEditError: null,
+    userAvatarEditError: null,
+  };
+}
+export const defaultState: AppState = getDefaultState();
 
 export type Chat = Record<string, number | string | unknown>;
 export interface AppState {

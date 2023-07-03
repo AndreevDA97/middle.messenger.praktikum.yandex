@@ -10,7 +10,8 @@ type TRouteConstructor = {
   needAuth: boolean,
   notFound: boolean,
   redirectPath: string,
-  onUnautorized: () => boolean
+  onUnautorized: () => boolean,
+  onAutorized: () => boolean
 };
 
 export default class Router {
@@ -49,6 +50,7 @@ export default class Router {
     needAuth = false,
     notFound = false,
     onUnautorized,
+    onAutorized,
     redirectPath }
   : Partial<TRouteConstructor>) {
     const redirect = () => (redirectPath ? this.go(redirectPath) : null);
@@ -60,6 +62,7 @@ export default class Router {
       needAuth,
       notFound,
       onUnautorized,
+      onAutorized,
       redirect,
     );
     this.routes.push(route);
