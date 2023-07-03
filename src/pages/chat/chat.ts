@@ -52,13 +52,11 @@ class ChatPage extends Block {
     });
     const nextProps: any = {
       ...props,
-      sidebar,
-      chatDialog,
-      chatAddModal,
+      _sidebar: sidebar,
+      _chatDialog: chatDialog,
+      _chatAddModal: chatAddModal,
     };
-    nextProps._sidebar = sidebar;
-    nextProps._chatDialog = chatDialog;
-    nextProps._chatAddModal = chatAddModal;
+    nextProps.welcome = true;
     super('div', nextProps, template);
   }
 

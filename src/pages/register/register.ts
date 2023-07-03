@@ -96,10 +96,9 @@ class RegisterPage extends Block {
     const nextProps: any = {
       ...props,
       ...inputs,
-      button,
+      _formFields: inputs,
+      _formButton: button,
     };
-    nextProps._formFields = inputs;
-    nextProps._formButton = button;
     super('div', nextProps, template);
   }
 

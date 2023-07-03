@@ -53,9 +53,7 @@ window.addEventListener('DOMContentLoaded', () => {
             pathname: RoutePath.Chat,
             exact: true,
             block: ChatPage,
-            props: {
-              welcome: false,
-            },
+            props: {},
             needAuth: true,
             onUnautorized: () => rootStore.getState().isAuth,
             redirectPath: RoutePath.Login,

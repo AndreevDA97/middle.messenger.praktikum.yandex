@@ -16,6 +16,7 @@ type TProfile = {
   displayName: string,
   avatarSrc?: string,
   editMode?: boolean,
+  onClickAvatar?: () => void,
   _formFields?: Record<string, Input>,
   _formButton?: Button
 };
@@ -151,16 +152,21 @@ export default class Profile extends Block {
     const nextProps: any = {
       ...props,
       ...formFields,
-      button,
+      _formFields: formFields,
+      _formButton: button,
     };
     nextProps.editMode = props.action === ProfileAction.UserEdit
         || props.action === ProfileAction.PasswordEdit;
-    nextProps._formFields = formFields;
-    nextProps._formButton = button;
     super('div', nextProps, template);
   }
 
   render() {
+    setTimeout(() => {
+      const avatarElement = document.getElementById('user-avatar');
+      avatarElement!.onclick = () => {
+        this.props.onClickAvatar();
+      };
+    }, 100);
     return this.compile(this.props);
   }
 }

@@ -31,6 +31,9 @@ class UserPage extends Block {
       action: profileAction,
       displayName: (user.login || user.display_name) as string,
       avatarSrc: UserController.getAvatarSrc(user.avatar as string),
+      onClickAvatar: () => {
+        this.children.avatarEditModal.setProps({ showModal: true });
+      },
     });
     const avatarEditModal = new FileModal({
       showModal: false,
@@ -39,15 +42,17 @@ class UserPage extends Block {
       titleError: '',
       fileText: 'Выбрать файл на<br>компьютере',
       fileError: '',
+      fieldName: 'avatar',
       submitText: 'Поменять',
+      onSubmit: (form) => {
+        UserController.changeAvatar.bind(UserController)(new FormData(form));
+      },
     });
     const nextProps: any = {
       ...props,
-      profile,
-      avatarEditModal,
+      _profile: profile,
+      _avatarEditModal: avatarEditModal,
     };
-    nextProps._profile = profile;
-    nextProps._avatarEditModal = avatarEditModal;
     super('div', nextProps, template);
   }
 

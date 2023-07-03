@@ -3,6 +3,7 @@ import Block from '../core/Block';
 import { TOptionsData } from '../core/HTTPTransport';
 import BaseController from './BaseController';
 import { RoutePath } from '../core/utils/configuration';
+import FileApi from '../services/FileApi';
 
 class UserController extends BaseController {
   public async changeData(data: TOptionsData) {
@@ -39,6 +40,28 @@ class UserController extends BaseController {
     }
   }
 
+  public async changeAvatar(file: FormData) {
+    try {
+      const { status, response } = await UserApi.changeAvatar(file);
+      if (status === 200) {
+        alert('Аватар изменен!');
+        this.store.set({ user: JSON.parse(response) });
+        this.router.go(RoutePath.User);
+      } else if (status === 500) {
+        this.router.go(RoutePath.Error_500);
+      } else {
+        alert(JSON.parse(response).reason || 'Ошибочный запрос');
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  public getAvatarSrc(path: string):string {
+    return FileApi.getFileSrc(path);
+  }
+
   public async searchUsers(self: Block, value: string) {
     if (!value) {
       self.setProps({ foundUsers: null });
@@ -56,26 +79,6 @@ class UserController extends BaseController {
     } catch (e) {
       console.log(e);
     }
-  }
-
-  public async changeAvatar(file: FormData) {
-    try {
-      const { status, response } = await UserApi.changeAvatar(file);
-      if (status === 200) {
-        this.store.set({ user: JSON.parse(response) });
-      } else if (status === 500) {
-        this.router.go(RoutePath.Error_500);
-      } else {
-        alert(JSON.parse(response).reason || 'Ошибочный запрос');
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  public getAvatarSrc(path: string):string {
-    return `${UserApi.baseUrl}/resources/${path}`;
   }
 }
 

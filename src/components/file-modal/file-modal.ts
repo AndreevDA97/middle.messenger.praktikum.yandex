@@ -8,7 +8,9 @@ type TFileModal = {
   titleError: string,
   fileText: string,
   fileError: string,
-  submitText: string
+  fieldName: string,
+  submitText: string,
+  onSubmit?: (form: HTMLFormElement) => void
 };
 export default class FileModal extends Block {
   constructor(props: TFileModal) {
@@ -19,6 +21,19 @@ export default class FileModal extends Block {
   }
 
   render() {
+    setTimeout(() => {
+      const formElement = document
+        .querySelector<HTMLElement>(`#${this.props.dialogId} form`);
+      formElement!.onsubmit = async (event) => {
+        event.preventDefault();
+        const form = event.target as HTMLFormElement;
+        this.props.onSubmit(form);
+        // const input = form.elements.namedItem(this.props.fieldName) as HTMLInputElement;
+        // const file = input.files!.item(0);
+      };
+      window.additionalEffects.clear();
+      window.additionalEffects.create();
+    }, 100);
     return this.compile(this.props);
   }
 }

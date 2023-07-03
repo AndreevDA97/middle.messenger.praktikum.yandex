@@ -56,10 +56,9 @@ class LoginPage extends Block {
     const nextProps = {
       ...props,
       ...inputs,
-      button,
+      _formFields: inputs,
+      _formButton: button,
     };
-    nextProps._formFields = inputs;
-    nextProps._formButton = button;
     super('div', nextProps, template);
   }
 
