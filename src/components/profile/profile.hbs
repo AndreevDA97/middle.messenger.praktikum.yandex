@@ -30,11 +30,11 @@
     </div>
     {{#unless editMode}}
         <nav class="user-profile__links">
-            <a class="user-profile__link" href="/user/edit">Изменить данные</a>
+            <a class="user-profile__link" href="javascript:router.go('/settings/edit')">Изменить данные</a>
             <hr>
-            <a class="user-profile__link" href="/user/password/edit">Изменить пароль</a>
+            <a class="user-profile__link" href="javascript:router.go('/settings/password/edit')">Изменить пароль</a>
             <hr>
-            <a class="user-profile__link user-profile__link_exit" href="/logout">Выйти</a>
+            <a class="user-profile__link user-profile__link_exit" href="javascript:router.go('/settings/logout')">Выйти</a>
         </nav>
     {{/unless}}
 </main>

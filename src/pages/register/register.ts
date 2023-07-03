@@ -5,6 +5,7 @@ import Button, { ButtonType } from '../../components/button/button';
 import validate, { RegexRules } from '../../core/utils/validateInput';
 import { withStore } from '../../core/utils/withStore';
 import { withRouter } from '../../core/utils/withRouter';
+import AuthController from '../../controllers/AuthController';
 
 type TRegisterPage = {
   _formFields?: Record<string, Input>,
@@ -17,7 +18,7 @@ class RegisterPage extends Block {
         title: 'Почта',
         name: 'email',
         type: InputType.Text,
-        value: 'pochta@mail.ru',
+        value: '',
         check: (value) => (validate(RegexRules.EMAIL_REGEX, value)
           ? '' : 'Ошибка ввода почты'),
       }),
@@ -25,7 +26,7 @@ class RegisterPage extends Block {
         title: 'Логин',
         name: 'login',
         type: InputType.Text,
-        value: 'ivanivanov',
+        value: '',
         check: (value) => (validate(RegexRules.LOGIN_REGEX, value)
           ? '' : 'Ошибка ввода логина'),
       }),
@@ -33,7 +34,7 @@ class RegisterPage extends Block {
         title: 'Имя',
         name: 'first_name',
         type: InputType.Text,
-        value: 'Иван',
+        value: '',
         check: (value) => (validate(RegexRules.NAME_REGEX, value)
           ? '' : 'Ошибка ввода имени'),
       }),
@@ -41,7 +42,7 @@ class RegisterPage extends Block {
         title: 'Фамилия',
         name: 'second_name',
         type: InputType.Text,
-        value: 'Иванов',
+        value: '',
         check: (value) => (validate(RegexRules.NAME_REGEX, value)
           ? '' : 'Ошибка ввода фамилии'),
       }),
@@ -49,7 +50,7 @@ class RegisterPage extends Block {
         title: 'Телефон',
         name: 'phone',
         type: InputType.Text,
-        value: '+79099342354',
+        value: '',
         check: (value) => (validate(RegexRules.PHONE_REGEX, value)
           ? '' : 'Ошибка ввода телефона'),
       }),
@@ -57,7 +58,7 @@ class RegisterPage extends Block {
         title: 'Пароль',
         name: 'password_attempt',
         type: InputType.Password,
-        value: 'qwerty1234',
+        value: '',
         check: (value) => (validate(RegexRules.PASSWORD_REGEX, value)
           ? '' : 'Ошибка ввода пароля'),
       }),
@@ -65,7 +66,7 @@ class RegisterPage extends Block {
         title: 'Пароль (ещё раз)',
         name: 'password',
         type: InputType.Password,
-        value: 'qwerty',
+        value: '',
         check: (value) => (validate(RegexRules.PASSWORD_REGEX, value)
           ? '' : 'Ошибка ввода повторного пароля'),
       }),
@@ -87,6 +88,8 @@ class RegisterPage extends Block {
             data[child.props.name] = String(child.props.value);
           });
           console.log(data);
+          // отправить запрос на регистрацию
+          AuthController.register.bind(AuthController)(data);
         },
       },
     });

@@ -10,9 +10,9 @@ export enum ProfileAction {
   PasswordEdit,
 }
 type TProfile = {
-  action: ProfileAction,
+  action?: ProfileAction,
   displayName: string,
-  editMode: boolean,
+  editMode?: boolean,
   _formFields?: Record<string, Input>,
   _formButton?: Button
 };
@@ -28,7 +28,7 @@ export default class Profile extends Block {
           type: InputType.Text,
           template: InputTemplate.Profile,
           value: 'pochta@mail.ru',
-          editMode: props.editMode,
+          editMode: props.action === ProfileAction.UserEdit,
           check: (value) => (validate(RegexRules.EMAIL_REGEX, value)
             ? '' : 'Ошибка ввода почты'),
         }),
@@ -38,7 +38,7 @@ export default class Profile extends Block {
           type: InputType.Text,
           template: InputTemplate.Profile,
           value: 'ivanivanov',
-          editMode: props.editMode,
+          editMode: props.action === ProfileAction.UserEdit,
           check: (value) => (validate(RegexRules.LOGIN_REGEX, value)
             ? '' : 'Ошибка ввода логина'),
         }),
@@ -48,7 +48,7 @@ export default class Profile extends Block {
           type: InputType.Text,
           template: InputTemplate.Profile,
           value: 'Иван',
-          editMode: props.editMode,
+          editMode: props.action === ProfileAction.UserEdit,
           check: (value) => (validate(RegexRules.NAME_REGEX, value)
             ? '' : 'Ошибка ввода имени'),
         }),
@@ -58,7 +58,7 @@ export default class Profile extends Block {
           type: InputType.Text,
           template: InputTemplate.Profile,
           value: 'Иванов',
-          editMode: props.editMode,
+          editMode: props.action === ProfileAction.UserEdit,
           check: (value) => (validate(RegexRules.NAME_REGEX, value)
             ? '' : 'Ошибка ввода фамилии'),
         }),
@@ -68,7 +68,7 @@ export default class Profile extends Block {
           type: InputType.Text,
           template: InputTemplate.Profile,
           value: 'Иван',
-          editMode: props.editMode,
+          editMode: props.action === ProfileAction.UserEdit,
         }),
         phoneInput: new Input({
           title: 'Телефон',
@@ -76,7 +76,7 @@ export default class Profile extends Block {
           type: InputType.Text,
           template: InputTemplate.Profile,
           value: '+79099342354',
-          editMode: props.editMode,
+          editMode: props.action === ProfileAction.UserEdit,
           check: (value) => (validate(RegexRules.PHONE_REGEX, value)
             ? '' : 'Ошибка ввода телефона'),
         }),
@@ -89,7 +89,7 @@ export default class Profile extends Block {
           type: InputType.Password,
           template: InputTemplate.Profile,
           value: 'qwerty1234',
-          editMode: props.editMode,
+          editMode: true,
           check: (value) => (validate(RegexRules.PASSWORD_REGEX, value)
             ? '' : 'Ошибка ввода пароля'),
         }),
@@ -99,7 +99,7 @@ export default class Profile extends Block {
           type: InputType.Password,
           template: InputTemplate.Profile,
           value: 'qwerty1234',
-          editMode: props.editMode,
+          editMode: true,
           check: (value) => (validate(RegexRules.PASSWORD_REGEX, value)
             ? '' : 'Ошибка ввода пароля'),
         }),
@@ -109,7 +109,7 @@ export default class Profile extends Block {
           type: InputType.Password,
           template: InputTemplate.Profile,
           value: 'qwerty',
-          editMode: props.editMode,
+          editMode: true,
           check: (value) => (validate(RegexRules.PASSWORD_REGEX, value)
             ? '' : 'Ошибка ввода пароля'),
         }),
@@ -140,6 +140,8 @@ export default class Profile extends Block {
       ...formFields,
       button,
     };
+    nextProps.editMode = props.action === ProfileAction.UserEdit
+        || props.action === ProfileAction.PasswordEdit;
     nextProps._formFields = formFields;
     nextProps._formButton = button;
     super('div', nextProps, template);

@@ -1,15 +1,38 @@
 import EventBus from './EventBus';
+import { cloneDeep, merge } from './utils/extensions';
 
 export const defaultState: AppState = {
-  appIsInited: false,
-  loginFormError: null,
+  isAppInit: false,
+  isLoading: false,
+  isAuth: false,
   user: null,
+  chats: null,
+  loginError: null,
+  registerError: null,
+  userEditError: null,
+  userPasswordEditError: null,
+  userAvatarEditError: null,
 };
 
+export type Chat = Record<string, number | string | unknown>;
 export interface AppState {
-  appIsInited: boolean;
-  loginFormError: string | null;
-  user: object | null;
+  isAppInit: boolean,
+  isLoading: boolean,
+  isAuth: boolean,
+  user: Record<string, string | number> | null,
+  chats: Array<Chat> | null,
+  currentChat?: {
+    isLoading: boolean,
+    isLoadingOldMsg: boolean,
+    scroll: number,
+    chat: null | Chat,
+    messages: Array<Chat> | null,
+  } | any,
+  loginError: string | null;
+  registerError: string | null;
+  userEditError: string | null;
+  userPasswordEditError: string | null;
+  userAvatarEditError: string | null;
 }
 
 export type Dispatch<State> = (
@@ -23,7 +46,11 @@ export type Action<State> = (
   payload: any,
 ) => void;
 
-export class Store<State extends Record<string, any>> extends EventBus {
+export enum StoreEvents {
+  Changed = 'changed',
+}
+
+export class Store<State extends AppState> extends EventBus {
   private state: State = {} as State;
 
   constructor(state: State) {
@@ -38,18 +65,20 @@ export class Store<State extends Record<string, any>> extends EventBus {
   }
 
   public set(nextState: Partial<State>) {
-    const prevState = { ...this.state };
+    const prevState = cloneDeep(this.state);
 
-    this.state = { ...this.state, ...nextState };
+    this.state = merge(this.state, nextState) as State;
 
-    this.emit('changed', prevState, nextState);
+    this.emit(StoreEvents.Changed, prevState, nextState);
   }
 
   dispatch(nextStateOrAction: Partial<State> | Action<State>, payload?: any) {
     if (typeof nextStateOrAction === 'function') {
       nextStateOrAction(this.dispatch.bind(this), this.state, payload);
     } else {
-      this.set({ ...this.state, ...nextStateOrAction });
+      this.set(merge(cloneDeep(this.state), nextStateOrAction) as State);
     }
   }
 }
+
+export const rootStore = new Store<AppState>(defaultState);

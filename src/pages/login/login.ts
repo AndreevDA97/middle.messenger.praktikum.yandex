@@ -5,6 +5,7 @@ import Button, { ButtonType } from '../../components/button/button';
 import validate, { RegexRules } from '../../core/utils/validateInput';
 import { withStore } from '../../core/utils/withStore';
 import { withRouter } from '../../core/utils/withRouter';
+import AuthController from '../../controllers/AuthController';
 
 type TLoginPage = {
   _formFields?: Record<string, Input>,
@@ -17,17 +18,17 @@ class LoginPage extends Block {
         title: 'Логин',
         name: 'login',
         type: InputType.Text,
-        value: 'ivanivanov',
+        value: '',
         check: (value) => (validate(RegexRules.LOGIN_REGEX, value)
-          ? '' : 'Ошибка ввода логина'),
+          ? '' : 'Логин введен некорректно'),
       }),
       passwordInput: new Input({
         title: 'Пароль',
         name: 'password',
         type: InputType.Password,
-        value: 'qwerty123',
+        value: '',
         check: (value) => (validate(RegexRules.PASSWORD_REGEX, value)
-          ? '' : 'Ошибка ввода пароля'),
+          ? '' : 'Пароль введен некорректно'),
       }),
     };
     const button = new Button({
@@ -47,6 +48,8 @@ class LoginPage extends Block {
             data[child.props.name] = String(child.props.value);
           });
           console.log(data);
+          // отправить запрос на вход
+          AuthController.login.bind(AuthController)(data);
         },
       },
     });

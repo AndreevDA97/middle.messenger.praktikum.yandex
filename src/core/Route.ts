@@ -26,6 +26,8 @@ export default class Route {
 
   private _needAuth: boolean;
 
+  private _notFound: boolean;
+
   private _onUnautorized: any;
 
   private _redirect: () => void;
@@ -36,6 +38,7 @@ export default class Route {
     componentView: BlockClass | undefined,
     componentProps: any,
     needAuth: boolean = false,
+    notFound: boolean = false,
     onUnautorized?: () => boolean,
     redirect: () => void = () => {},
   ) {
@@ -44,6 +47,7 @@ export default class Route {
     this._blockClass = componentView;
     this._componentProps = componentProps;
     this._needAuth = needAuth;
+    this._notFound = notFound;
     this._onUnautorized = onUnautorized;
     this._params = this.getParams();
     this._redirect = redirect;
@@ -52,6 +56,17 @@ export default class Route {
   // eslint-disable-next-line class-methods-use-this
   public getParams(): {} {
     return Object.fromEntries((new URLSearchParams(document.location.search)).entries());
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  public getFullPath(): string {
+    let fullPath = window.location.pathname;
+    if (fullPath.slice(-1) === '/') fullPath = fullPath.slice(0, -1);
+    return fullPath;
+  }
+
+  public getPath(): string {
+    return this._pathname;
   }
 
   leave() {
@@ -72,6 +87,10 @@ export default class Route {
       }
     }
     return true;
+  }
+
+  isNotFound() {
+    return this._notFound;
   }
 
   render() {

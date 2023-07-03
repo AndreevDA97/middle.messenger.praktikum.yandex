@@ -7,10 +7,10 @@ enum METHODS {
   DELETE = 'DELETE',
 }
 
-type TOptionsData = Record<string, string | number>;
-type TOptions = {
+export type TOptionsData = Record<string, string | number | Array<string | number>>;
+export type TOptions = {
   headers?: Record<string, string>,
-  data?: TOptionsData,
+  data?: TOptionsData | FormData,
   method?: string,
   timeout?: number
 };
@@ -18,23 +18,29 @@ type HTTPMethod = (url: string, options?: TOptions) => Promise<unknown>;
 type HTTPRequest = (url: string, options?: TOptions, timeout?: number) => Promise<unknown | void>;
 
 export default class HTTPTransport {
-  static get: HTTPMethod = (url = '', options = {}) => (
+  baseUrl: string = '';
+
+  constructor(baseUrl: string) {
+    this.baseUrl = baseUrl;
+  }
+
+  public get: HTTPMethod = (url = '', options = {}) => (
     this.request(url, { ...options, method: METHODS.GET }, options.timeout)
   );
 
-  static post: HTTPMethod = (url = '', options = {}) => (
+  public post: HTTPMethod = (url = '', options = {}) => (
     this.request(url, { ...options, method: METHODS.POST }, options.timeout)
   );
 
-  static put: HTTPMethod = (url = '', options = {}) => (
+  public put: HTTPMethod = (url = '', options = {}) => (
     this.request(url, { ...options, method: METHODS.PUT }, options.timeout)
   );
 
-  static delete: HTTPMethod = (url = '', options = {}) => (
+  public delete: HTTPMethod = (url = '', options = {}) => (
     this.request(url, { ...options, method: METHODS.DELETE }, options.timeout)
   );
 
-  static request: HTTPRequest = (url = '', options = {}, timeout = 5000): Promise<unknown | void> => {
+  public request: HTTPRequest = (url = '', options = {}, timeout = 5000): Promise<unknown | void> => {
     const { headers = {}, method, data } = options;
 
     return new Promise((resolve, reject) => {
@@ -45,9 +51,12 @@ export default class HTTPTransport {
       }
 
       const xhr = new XMLHttpRequest();
-      const fullQuery = data ? url + queryStringify(data) : url;
+      const query = this.baseUrl + url;
+      const fullQuery = data && method === METHODS.GET
+        ? query + queryStringify(data) : query;
 
       xhr.open(method, fullQuery);
+      xhr.withCredentials = true;
       Object.keys(headers).forEach((key) => {
         xhr.setRequestHeader(key, headers[key]);
       });
@@ -65,7 +74,9 @@ export default class HTTPTransport {
       if (method === METHODS.GET || !data) {
         xhr.send();
       } else {
-        xhr.send(JSON.stringify(data));
+        const sendData = data instanceof FormData
+          ? data : JSON.stringify(data);
+        xhr.send(sendData);
       }
     });
   };

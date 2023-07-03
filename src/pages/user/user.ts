@@ -4,6 +4,8 @@ import Profile, { ProfileAction } from '../../components/profile/profile';
 import FileModal from '../../components/file-modal/file-modal';
 import { withStore } from '../../core/utils/withStore';
 import { withRouter } from '../../core/utils/withRouter';
+import { rootRouter } from '../../core/Router';
+import AuthController from '../../controllers/AuthController';
 
 type TUserPage = {
   _profile?: Profile,
@@ -11,10 +13,19 @@ type TUserPage = {
 };
 class UserPage extends Block {
   constructor(props: TUserPage = {}) {
+    const route = rootRouter.getCurrentRoute();
+    let profileAction = ProfileAction.Profile;
+    switch (route.getFullPath()) {
+      case '/settings/logout':
+        setTimeout(AuthController.logout.bind(AuthController), 0);
+        break;
+      case '/settings/edit': profileAction = ProfileAction.UserEdit; break;
+      case '/settings/password/edit': profileAction = ProfileAction.PasswordEdit; break;
+      default:
+    }
     const profile = new Profile({
-      action: ProfileAction.PasswordEdit,
+      action: profileAction,
       displayName: 'Иван',
-      editMode: true,
     });
     const avatarEditModal = new FileModal({
       showModal: false,
@@ -32,14 +43,20 @@ class UserPage extends Block {
     };
     nextProps._profile = profile;
     nextProps._avatarEditModal = avatarEditModal;
-    console.log(props);
     super('div', nextProps, template);
   }
 
   componentDidMount() {
     setTimeout(() => {
+      const route = rootRouter.getCurrentRoute();
       const backElement = document.getElementById('go-back');
-      backElement!.onclick = () => { this.props.router.back(); };
+      backElement!.onclick = () => {
+        switch (route.getFullPath()) {
+          case '/settings/edit': this.props.router.go('/settings'); break;
+          case '/settings/password/edit': this.props.router.go('/settings'); break;
+          default: this.props.router.go('/messenger'); break;
+        }
+      };
       window.additionalEffects.create();
     }, 100);
   }

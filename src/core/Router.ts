@@ -1,5 +1,6 @@
 import Route from './Route';
 import { BlockClass } from './Block';
+import { RoutePath } from './utils/configuration';
 
 type TRouteConstructor = {
   pathname: string,
@@ -7,6 +8,7 @@ type TRouteConstructor = {
   props: any,
   exact: boolean,
   needAuth: boolean,
+  notFound: boolean,
   redirectPath: string,
   onUnautorized: () => boolean
 };
@@ -23,25 +25,32 @@ export default class Router {
   private _rootQuery: string;
 
   constructor(rootQuery: string) {
-    // if (PathRouter.__instance) {
-    //     return PathRouter.__instance;
-    // }
+    if (Router.__instance) {
+      // eslint-disable-next-line no-constructor-return
+      return Router.__instance;
+    }
 
     this.routes = [];
     this.history = window.history;
     this._rootQuery = rootQuery;
 
-    // PathRouter.__instance = this;
+    Router.__instance = this;
   }
 
   static getInstance() {
     return this.__instance;
   }
 
-  use(
-    { pathname, block, props = {}, exact = true, needAuth = false, onUnautorized, redirectPath }
-    : Partial<TRouteConstructor>,
-  ) {
+  use({
+    pathname,
+    block,
+    props = {},
+    exact = true,
+    needAuth = false,
+    notFound = false,
+    onUnautorized,
+    redirectPath }
+  : Partial<TRouteConstructor>) {
     const redirect = () => (redirectPath ? this.go(redirectPath) : null);
     const route = new Route(
       pathname || '',
@@ -49,6 +58,7 @@ export default class Router {
       block,
       props,
       needAuth,
+      notFound,
       onUnautorized,
       redirect,
     );
@@ -64,7 +74,8 @@ export default class Router {
   }
 
   _onRoute(pathname: string) {
-    const route = this.getRoute(pathname);
+    const route = this.getRoute(pathname)
+        || this.routes.find((r) => r.isNotFound());
     if (!route) {
       return;
     }
@@ -73,7 +84,7 @@ export default class Router {
     route.render();
   }
 
-  go(pathname: string) {
+  go(pathname: string | RoutePath) {
     this.history.pushState({}, '', pathname);
     this._onRoute(pathname);
   }
@@ -88,6 +99,10 @@ export default class Router {
 
   getRoute(pathname: string) {
     return this.routes.find((route) => route.match(pathname));
+  }
+
+  getCurrentRoute(): Route {
+    return this._currentRoute;
   }
 }
 

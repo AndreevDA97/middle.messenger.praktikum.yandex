@@ -1,3 +1,4 @@
+// подключение вспомогательных скриптов макета (меню, модальное окно, отображение)
 window.additionalEffects = (function () {
     let dropdownButtonsClickFunc = function (e) {
         if (e.target.parentElement !== this && e.target !== this) return;
@@ -29,7 +30,6 @@ window.additionalEffects = (function () {
         });
     }
     // глобальный обработчик нажатий в окне
-    console.log('Additional registered!!!');
     window.onclick = function(event) {
         // когда пользователь нажимает на внешнюю область модального окна
         if (event.target.classList.contains('modal_closable')) {

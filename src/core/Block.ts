@@ -1,7 +1,6 @@
 // @ts-ignore
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { v4 as uuidv4 } from 'uuid';
-import { cloneDeep, merge } from './utils/extensions';
 import EventBus from './EventBus';
 
 export interface TProps {
@@ -133,8 +132,8 @@ export default class Block<P extends TProps = any> {
     if (!nextProps) {
       return;
     }
-    this._prevProps = cloneDeep(this.props);
-    merge(this.props, nextProps);
+    this._prevProps = { ...this.props };
+    Object.assign(this.props, nextProps);
   };
 
   // eslint-disable-next-line no-undef

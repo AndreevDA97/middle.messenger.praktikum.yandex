@@ -4,7 +4,7 @@ export function trim(value: string, letters: string = '\\s'): string {
   return value.replace(begReg, '').replace(endReg, '');
 }
 
-type Indexed<T = unknown> = {
+type Indexed<T = any> = {
   [key in string]: T;
 };
 export function merge(lhs: Indexed, rhs: Indexed): Indexed {
