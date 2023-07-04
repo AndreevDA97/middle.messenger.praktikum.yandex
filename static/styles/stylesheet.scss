@@ -265,6 +265,10 @@ button {
     left: 55px;
     top: 33.33%;
   }
+  &__not-founded {
+    text-align: center;
+    color: $alt-color;
+  }
 }
 
 .chat-welcome {

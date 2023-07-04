@@ -4,17 +4,22 @@ import Sidebar from '../../components/sidebar/sidebar';
 import ChatDialog, { MsgType, SenderType } from '../../components/chat-dialog/chat-dialog';
 import UserModal from '../../components/user-modal/user-modal';
 import chatterPhoto from '../../../static/images/chatter_photo.png';
-import { withStore } from '../../core/utils/withStore';
-import { withRouter } from '../../core/utils/withRouter';
+import { WithStateProps, withStore } from '../../core/utils/withStore';
+import { withRouter, WithRouterProps } from '../../core/utils/withRouter';
+import UserController from '../../controllers/UserController';
 
-type TChatPage = {
+interface TChatPage extends WithRouterProps, WithStateProps {
   welcome: boolean,
   _sidebar?: Sidebar,
   _chatDialog?: ChatDialog,
   _chatAddModal?: UserModal
-};
+}
 class ChatPage extends Block {
   constructor(props: TChatPage) {
+    if (!props.router || !props.store) {
+      throw new Error('Ошибка инициализации');
+    }
+    const user = props.store.getState().user || {};
     const sidebar = new Sidebar({
       contacts: [
         { user: 'Андрей', message: 'Изображение', time: '10:49', count: '2' },
@@ -28,6 +33,7 @@ class ChatPage extends Block {
         { user: 'Стас Рогозин', message: 'Можно или сегодня или завтра вечером.', time: '12 Апр 2020' },
       ],
       search: '',
+      avatarSrc: UserController.getAvatarSrc(user.avatar as string),
       profile: false,
     });
     const chatDialog = new ChatDialog({

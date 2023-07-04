@@ -1,0 +1,34 @@
+<section class="sidebar-contacts">
+    {{#if search}}
+        {{#each foundUsers}}
+            <div class="sidebar-contacts__item">
+                <div class="sidebar-contact">
+                    <div class="sidebar-contact__avatar"></div>
+                    <div class="sidebar-contact__founded">{{login}}</div>
+                </div>
+            </div>
+        {{/each}}
+        {{#unless foundUsers}}
+            <div class="sidebar-contacts__item">
+                <div class="sidebar-contact">
+                    <div class="sidebar-contact__not-founded">Ничего не найдено...</div>
+                </div>
+            </div>
+        {{/unless}}
+    {{else}}
+        {{#each contacts}}
+            <div class="sidebar-contacts__item {{#if isActive}}sidebar-contacts__item_active{{/if}}">
+                <div class="sidebar-contact">
+                    <div class="sidebar-contact__avatar"></div>
+                    <div class="sidebar-contact__username">{{user}}</div>
+                    <div class="sidebar-contact__message {{#if isMsgOwner}}sidebar-contact__message_owner{{/if}}">{{message}}</div>
+                    <div class="sidebar-contact__time">{{time}}</div>
+                    {{#if count}}
+                        <div class="sidebar-contact__count">{{count}}</div>
+                    {{/if}}
+                </div>
+            </div>
+            <hr>
+        {{/each}}
+    {{/if}}
+</section>

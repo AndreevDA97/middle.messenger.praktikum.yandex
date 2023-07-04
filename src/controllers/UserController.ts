@@ -64,13 +64,13 @@ class UserController extends BaseController {
 
   public async searchUsers(self: Block, value: string) {
     if (!value) {
-      self.setProps({ foundUsers: null });
+      self.setProps({ search: value, foundUsers: null });
       return;
     }
     try {
       const { status, response } = await UserApi.searchUser(value);
       if (status === 200) {
-        self.setProps({ foundUsers: JSON.parse(response) });
+        self.setProps({ search: value, foundUsers: JSON.parse(response) });
       } else if (status === 500) {
         this.router.go(RoutePath.Error_500);
       } else {

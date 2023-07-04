@@ -32,7 +32,7 @@ class UserPage extends Block {
       displayName: (user.login || user.display_name) as string,
       avatarSrc: UserController.getAvatarSrc(user.avatar as string),
       onClickAvatar: () => {
-        this.children.avatarEditModal.setProps({ showModal: true });
+        this.children._avatarEditModal.setProps({ showModal: true });
       },
     });
     const avatarEditModal = new FileModal({

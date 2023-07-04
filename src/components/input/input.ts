@@ -29,13 +29,13 @@ export default class Input extends Block {
       ...props,
       events: {
         ...props.events,
-        focusin: (self: Input, evt: Event) => {
-          const { value } = evt.target as HTMLInputElement;
+        focusin: (self: Input, event: Event) => {
+          const { value } = event.target as HTMLInputElement;
           const checkMsg = this.props.check ? this.props.check(value) : '';
           self.setProps({ value, errorMsg: checkMsg });
         },
-        focusout: (self: Input, evt: Event) => {
-          const { value } = evt.target as HTMLInputElement;
+        focusout: (self: Input, event: Event) => {
+          const { value } = event.target as HTMLInputElement;
           const checkMsg = this.props.check ? this.props.check(value) : '';
           self.setProps({ value, errorMsg: checkMsg });
         },
