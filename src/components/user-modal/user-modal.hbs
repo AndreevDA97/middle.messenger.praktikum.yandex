@@ -7,11 +7,12 @@
         <div class="modal-dialog__content">
             <form class="form" onsubmit="return false">
                 <div class="form__group">
-                    <input class="form__input {{#if loginError}}form__input_error{{/if}}"
-                           type="text" placeholder="Логин" name="login" value="{{login}}" required>
-                    <label class="form__label" for="login">Логин</label>
-                    {{#if loginError}}
-                        <label class="form__error">{{loginError}}</label>
+                    <input class="form__input {{#if fieldError}}form__input_error{{/if}}"
+                           type="text" placeholder="{{fieldPlaceholder}}"
+                           name="{{fieldName}}" value="{{fieldValue}}" required {{#if fieldDisabled}} disabled {{/if}}>
+                    <label class="form__label" for="{{fieldName}}">{{fieldTitle}}</label>
+                    {{#if fieldError}}
+                        <label class="form__error">{{fieldError}}</label>
                     {{/if}}
                 </div>
                 <div class="form__submit">

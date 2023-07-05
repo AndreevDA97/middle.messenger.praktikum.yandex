@@ -6,14 +6,16 @@
         </div>
         <div class="modal-dialog__content">
             <form class="form" onsubmit="return false">
-                {{{_formFields}}}
+                {{#each _formFields}}
+                    {{{lookup ../this @key}}}
+                {{/each}}
                 <div class="form__submit">
-                    {{{_formButtons}}}
+                    {{{_formButton}}}
                 </div>
             </form>
         </div>
         <div class="modal-dialog__info">
-            <a href="/login">Уже есть данные входа?</a>
+            <a href="javascript:router.go('/')">Уже есть данные входа?</a>
         </div>
     </div>
 </main>

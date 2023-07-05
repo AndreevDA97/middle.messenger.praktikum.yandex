@@ -3,29 +3,32 @@ import Block from '../../core/Block';
 import Input, { InputType } from '../../components/input/input';
 import Button, { ButtonType } from '../../components/button/button';
 import validate, { RegexRules } from '../../core/utils/validateInput';
+import { withStore } from '../../core/utils/withStore';
+import { withRouter } from '../../core/utils/withRouter';
+import AuthController from '../../controllers/AuthController';
 
 type TLoginPage = {
-  _formFields?: string,
-  _formButtons?: string
+  _formFields?: Record<string, Input>,
+  _formButton?: Button
 };
-export default class LoginPage extends Block {
+class LoginPage extends Block {
   constructor(props: TLoginPage = {}) {
     const inputs: Record<string, Input> = {
       loginInput: new Input({
         title: 'Логин',
         name: 'login',
         type: InputType.Text,
-        value: 'ivanivanov',
+        value: '',
         check: (value) => (validate(RegexRules.LOGIN_REGEX, value)
-          ? '' : 'Ошибка ввода логина'),
+          ? '' : 'Логин введен некорректно'),
       }),
       passwordInput: new Input({
         title: 'Пароль',
         name: 'password',
         type: InputType.Password,
-        value: 'qwerty123',
+        value: '',
         check: (value) => (validate(RegexRules.PASSWORD_REGEX, value)
-          ? '' : 'Ошибка ввода пароля'),
+          ? '' : 'Пароль введен некорректно'),
       }),
     };
     const button = new Button({
@@ -44,20 +47,18 @@ export default class LoginPage extends Block {
           childInputs.forEach((child) => {
             data[child.props.name] = String(child.props.value);
           });
-          console.log(data);
+          (data);
+          // отправить запрос на вход
+          AuthController.login.bind(AuthController)(data);
         },
       },
     });
     const nextProps = {
       ...props,
       ...inputs,
-      button,
+      _formFields: inputs,
+      _formButton: button,
     };
-    nextProps._formFields = '';
-    Object.values(inputs).forEach((input: Block) => {
-      nextProps._formFields += `<div data-id="${input.props._id}"></div>`;
-    });
-    nextProps._formButtons = `<div data-id="${button.props._id}"></div>`;
     super('div', nextProps, template);
   }
 
@@ -65,3 +66,5 @@ export default class LoginPage extends Block {
     return this.compile(this.props);
   }
 }
+
+export default withRouter(withStore(LoginPage));

@@ -1,4 +1,4 @@
-@import '../fonts/inter/inter.css';
+@import 'inter';
 @import 'minireset';
 @import 'variables';
 
@@ -129,7 +129,7 @@ button {
       background-color: $alt-color;
     }
   }
-  &__user-add {
+  &__chat-add {
     position: absolute;
     top: 5px;
     right: 0;
@@ -156,6 +156,7 @@ button {
   position: relative;
 
   span.icon {
+    pointer-events: none;
     position: absolute;
     top: 10px;
     left: calc(50% - 40px);
@@ -263,6 +264,10 @@ button {
     position: absolute;
     left: 55px;
     top: 33.33%;
+  }
+  &__not-founded {
+    text-align: center;
+    color: $alt-color;
   }
 }
 
@@ -447,6 +452,9 @@ button {
     flex-grow: 1;
     margin: 0 5px;
 
+    form {
+      margin-bottom: 0;
+    }
     input {
       @include use-ext-font;
       width: 100%;
@@ -661,7 +669,8 @@ button {
       bottom: 50px;
     }
 
-    a {
+    div {
+      cursor: pointer;
       color: black;
       padding: 10px 15px;
       text-decoration: none;
@@ -753,14 +762,15 @@ button {
   left: 0;
   background-color: $mask-bg-color;
 
-  display: flex;
   justify-content: center;
   align-items: center;
 
+  display: none;
   visibility: hidden;
   pointer-events: none;
 
   &_show, &:target {
+    display: flex;
     visibility: visible;
     pointer-events: auto;
   }
@@ -817,6 +827,7 @@ button {
   margin-top: -0.1em;
   background-color: $black-color;
 
+  &_plus { @include svg-icon('../images/icons/plus.svg'); }
   &_chats { @include svg-icon('../images/icons/chats.svg'); }
   &_user-add { @include svg-icon('../images/icons/user-add.svg'); }
   &_user-remove { @include svg-icon('../images/icons/user-remove.svg'); }

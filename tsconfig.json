@@ -1,13 +1,10 @@
 {
   "compilerOptions": {
-    // основные настройки
     "outDir": "dist",
-    "target": "es2017",
+    "target": "es2019",
     "declaration": false,
-    //"module": "commonjs",
     "module": "ES6",
     "moduleResolution": "node",
-    // расширенные настройки
     "noImplicitAny": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
