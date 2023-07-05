@@ -9,6 +9,7 @@ export type TUserModal = {
   fieldName: string,
   fieldTitle: string,
   fieldPlaceholder?: string,
+  fieldDisabled?: boolean,
   fieldValue?: string,
   fieldError?: string,
   submitText: string,

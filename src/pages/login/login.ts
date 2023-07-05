@@ -47,7 +47,7 @@ class LoginPage extends Block {
           childInputs.forEach((child) => {
             data[child.props.name] = String(child.props.value);
           });
-          console.log(data);
+          (data);
           // отправить запрос на вход
           AuthController.login.bind(AuthController)(data);
         },

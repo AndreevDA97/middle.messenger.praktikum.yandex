@@ -30,14 +30,14 @@ class UserPage extends Block {
     const profile = new Profile({
       action: profileAction,
       displayName: (user.login || user.display_name) as string,
-      avatarSrc: UserController.getAvatarSrc(user.avatar as string),
+      avatarSrc: UserController.getImageSrc(user.avatar as string),
       onClickAvatar: () => {
         this.children._avatarEditModal.setProps({ showModal: true });
       },
     });
     const avatarEditModal = new FileModal({
       showModal: false,
-      dialogId: 'user-avatar-edit',
+      dialogId: 'dlg-user-avatar-edit',
       title: 'Загрузите файл',
       titleError: '',
       fileText: 'Выбрать файл на<br>компьютере',

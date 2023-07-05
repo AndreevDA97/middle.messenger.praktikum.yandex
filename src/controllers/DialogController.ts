@@ -8,11 +8,14 @@ export type TWSSConnectOptions = {
   chatId: number | string,
   token: string,
 };
-enum EVENTS {
+enum WSSEvents {
   OPEN = 'open',
   MESSAGE = 'message',
   ERROR = 'error',
   CLOSE = 'close',
+}
+enum WSSErrorCode {
+  Closed = 1006,
 }
 
 class MessageController extends BaseController {
@@ -90,17 +93,17 @@ class MessageController extends BaseController {
   }
 
   private _addEvents() {
-    this.socket?.addEventListener(EVENTS.OPEN, this._handleOpen);
-    this.socket?.addEventListener(EVENTS.MESSAGE, this._handleMessage);
-    this.socket?.addEventListener(EVENTS.ERROR, this._handleError);
-    this.socket?.addEventListener(EVENTS.CLOSE, this._handleClose);
+    this.socket?.addEventListener(WSSEvents.OPEN, this._handleOpen);
+    this.socket?.addEventListener(WSSEvents.MESSAGE, this._handleMessage);
+    this.socket?.addEventListener(WSSEvents.ERROR, this._handleError);
+    this.socket?.addEventListener(WSSEvents.CLOSE, this._handleClose);
   }
 
   private _removeEvents() {
-    this.socket?.removeEventListener(EVENTS.OPEN, this._handleOpen);
-    this.socket?.removeEventListener(EVENTS.MESSAGE, this._handleMessage);
-    this.socket?.removeEventListener(EVENTS.ERROR, this._handleError);
-    this.socket?.removeEventListener(EVENTS.CLOSE, this._handleClose);
+    this.socket?.removeEventListener(WSSEvents.OPEN, this._handleOpen);
+    this.socket?.removeEventListener(WSSEvents.MESSAGE, this._handleMessage);
+    this.socket?.removeEventListener(WSSEvents.ERROR, this._handleError);
+    this.socket?.removeEventListener(WSSEvents.CLOSE, this._handleClose);
   }
 
   // eslint-disable-next-line consistent-return
@@ -120,7 +123,7 @@ class MessageController extends BaseController {
   }
 
   private _handleOpen() {
-    this.store.set({ currentChat: { messages: [] } });
+    this.store.set({ currentChat: { messages: null } });
     this.getMessage();
     this._ping = setInterval(() => {
       this.socket?.send(JSON.stringify({
@@ -132,7 +135,8 @@ class MessageController extends BaseController {
 
   private _handleMessage(e: MessageEvent) {
     const data = JSON.parse(e.data);
-    if (Array.isArray(data) && data.length < 20) {
+    // debugger;
+    if (Array.isArray(data) && data.length < 15) {
       this._allMessage = true;
       this.store.set({ currentChat: { isLoading: false } });
       this.store.set({ currentChat: { isLoadingOldMsg: false } });
@@ -143,12 +147,12 @@ class MessageController extends BaseController {
         this.store.set({ currentChat: { isLoading: false } });
         // activeDialog.scrollBottom();
       } else {
-        const oldMessages = this.store?.getState()?.currentChat?.messages ?? [];
+        const oldMessages = cloneDeep(this.store?.getState()?.currentChat?.messages ?? []);
         this.store.set({ currentChat: { messages: [...oldMessages, ...data] } });
         this.store.set({ currentChat: { isLoadingOldMsg: false } });
       }
     } else if (typeof data === 'object' && data?.type === 'message') {
-      const oldMessages = this.store?.getState()?.currentChat?.messages ?? [];
+      const oldMessages = cloneDeep(this.store?.getState()?.currentChat?.messages ?? []);
       this.store.set({ currentChat: { messages: [data, ...oldMessages] } });
       // activeDialog.scrollBottom();
       this._offset += 1;
@@ -174,17 +178,16 @@ class MessageController extends BaseController {
     this._offset += 20;
   }
 
-  public sendMessage(message: Record<string, unknown>): void {
-    const content = message['messagе'];
+  public sendMessage(message: string): void {
     this.socket?.send(JSON.stringify({
-      content,
+      content: message,
       type: 'message',
     }));
   }
 
   private _handleClose(e: any) {
     if (e.wasClean) {
-      console.log('Соединение закрыто чисто');
+      console.log('Соединение успешно закрыто');
     } else {
       console.log('Обрыв соединения');
     }
@@ -192,7 +195,7 @@ class MessageController extends BaseController {
     console.log(`Код: ${e.code} | Причина: ${e.reason}`);
 
     this.disconnect();
-    if (e.code === 1006) { // подключение было закрыто
+    if (e.code === WSSErrorCode.Closed) { // подключение было закрыто
       this._reconnect();
     }
   }

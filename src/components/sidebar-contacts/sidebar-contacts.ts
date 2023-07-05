@@ -27,12 +27,12 @@ class SidebarContacts extends Block<TSidebarContacts> {
     const nextProps = {
       ...props,
       events: {
-        click: (_self: SidebarContacts, event:PointerEvent) => {
+        click: async (_self: SidebarContacts, event:PointerEvent) => {
           const element = event.target as HTMLElement;
           const chatElement = element.closest('.sidebar-contacts__item[id^="chat-"]');
           if (chatElement) {
             const chatId = chatElement.id.split('-')[1];
-            DialogController.changeCurrentChat(chatId);
+            await DialogController.changeCurrentChat(chatId);
             this.setProps({ contacts: null });
           }
         },
@@ -50,7 +50,7 @@ class SidebarContacts extends Block<TSidebarContacts> {
           chat: c,
           chatId: c.id,
           title: c.title,
-          avatarSrc: UserController.getAvatarSrc(c.avatar as string),
+          avatarSrc: UserController.getImageSrc(c.avatar as string),
           count: c.unread_count,
           time: ChatController.getDateStr(lastMessage?.time as string),
           message: lastMessage?.content as string,

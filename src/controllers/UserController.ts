@@ -58,7 +58,7 @@ class UserController extends BaseController {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  public getAvatarSrc(path: string):string {
+  public getImageSrc(path: string):string {
     return FileApi.getFileSrc(path);
   }
 
@@ -79,6 +79,25 @@ class UserController extends BaseController {
     } catch (e) {
       console.log(e);
     }
+  }
+
+  public async getUserIdByLogin(login: string): Promise<number | null> {
+    if (!login) return null;
+    try {
+      const { status, response } = await UserApi.searchUser(login);
+      if (status === 200) {
+        const users = JSON.parse(response) as Array<any> | null;
+        return users?.length === 1 ? users[0].id : null;
+      }
+      if (status === 500) {
+        this.router.go(RoutePath.Error_500);
+      } else {
+        alert(JSON.parse(response).reason || 'Ошибочный запрос');
+      }
+    } catch (e) {
+      console.log(e);
+    }
+    return null;
   }
 }
 

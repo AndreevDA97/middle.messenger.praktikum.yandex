@@ -9,7 +9,7 @@
                 <div class="form__group">
                     <input class="form__input {{#if fieldError}}form__input_error{{/if}}"
                            type="text" placeholder="{{fieldPlaceholder}}"
-                           name="{{fieldName}}" value="{{fieldValue}}" required>
+                           name="{{fieldName}}" value="{{fieldValue}}" required {{#if fieldDisabled}} disabled {{/if}}>
                     <label class="form__label" for="{{fieldName}}">{{fieldTitle}}</label>
                     {{#if fieldError}}
                         <label class="form__error">{{fieldError}}</label>

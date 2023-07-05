@@ -1,11 +1,9 @@
 <main class="user-profile">
     <div class="user-profile__avatar">
         <div class="user-avatar" id="user-avatar">
-            {{#unless editMode}}
-                <div class="user-avatar__edit">
-                    <span>Поменять<br>аватар</span>
-                </div>
-            {{/unless}}
+            <div class="user-avatar__edit">
+                <span>Поменять<br>аватар</span>
+            </div>
             {{#if avatarSrc}}
                 <img class="initial-avatar" src="{{avatarSrc}}" alt="Изображение пользователя">
             {{else}}

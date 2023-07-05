@@ -1,9 +1,8 @@
 import template from './chat.hbs';
 import Block from '../../core/Block';
 import Sidebar from '../../components/sidebar/sidebar';
-import ChatDialog, { MsgType, SenderType } from '../../components/chat-dialog/chat-dialog';
+import ChatDialog from '../../components/chat-dialog/chat-dialog';
 import UserModal from '../../components/user-modal/user-modal';
-import chatterPhoto from '../../../static/images/chatter_photo.png';
 import { WithStateProps, withStore } from '../../core/utils/withStore';
 import { withRouter, WithRouterProps } from '../../core/utils/withRouter';
 import UserController from '../../controllers/UserController';
@@ -24,7 +23,7 @@ class ChatPage extends Block<TChatPage> {
     const sidebar = new Sidebar({
       contacts: null,
       search: '',
-      avatarSrc: UserController.getAvatarSrc(user.avatar as string),
+      avatarSrc: UserController.getImageSrc(user.avatar as string),
       showChatAdd: false,
       onChatAdd: () => {
         this.children._sidebar.setProps({ showChatAdd: true });
@@ -32,20 +31,14 @@ class ChatPage extends Block<TChatPage> {
       },
     });
     const chatDialog = new ChatDialog({
-      welcome: true,
-      chatter: 'Вадим',
-      history: [
-        { sender: SenderType.Owner, type: MsgType.Text, message: 'Круто!', time: '12:00', delivered: true },
-        { sender: SenderType.Chatter, type: MsgType.Image, image: chatterPhoto, time: '11:56' },
-        { sender: SenderType.Chatter, type: MsgType.Text, message: 'Привет! Смотри, тут всплыл интересный кусок лунной космической истории — НАСА в какой-то момент попросила Хассельблад адаптировать модель SWC для полетов на Луну. Сейчас мы все знаем что астронавты летали с моделью 500 EL — и к слову говоря, все тушки этих камер все еще находятся на поверхности Луны, так как астронавты с собой забрали только кассеты с пленкой.\r\n\r\nХассельблад в итоге адаптировал SWC для космоса, но что-то пошло не так и на ракету они так никогда и не попали. Всего их было произведено 25 штук, одну из них недавно продали на аукционе за 45000 евро.', time: '11:56' },
-        { sender: SenderType.System, type: MsgType.Text, message: '19 июня' },
-      ],
+      chatId: null,
+      isLoading: true,
       openUserMenu: false,
       openAttachmentMenu: false,
     });
     const chatAddModal = new UserModal({
       showModal: false,
-      dialogId: 'chat-add',
+      dialogId: 'dlg-chat-add',
       title: 'Создать чат',
       titleError: '',
       fieldName: 'title',
@@ -64,7 +57,7 @@ class ChatPage extends Block<TChatPage> {
       _chatAddModal: chatAddModal,
     };
     super('div', nextProps, template);
-    // обновить список чатовs
+    // обновить список чатов
     ChatController.getChats();
   }
 
@@ -74,7 +67,7 @@ class ChatPage extends Block<TChatPage> {
       window.additionalEffects.create(() => {
         this.children._sidebar.setProps({ showChatAdd: false });
       });
-    }, 100);
+    }, 500);
     return this.compile(this.props);
   }
 }

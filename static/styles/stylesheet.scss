@@ -452,6 +452,9 @@ button {
     flex-grow: 1;
     margin: 0 5px;
 
+    form {
+      margin-bottom: 0;
+    }
     input {
       @include use-ext-font;
       width: 100%;
@@ -666,7 +669,8 @@ button {
       bottom: 50px;
     }
 
-    a {
+    div {
+      cursor: pointer;
       color: black;
       padding: 10px 15px;
       text-decoration: none;
