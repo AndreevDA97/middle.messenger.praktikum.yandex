@@ -8,16 +8,12 @@ export function getDefaultState(): AppState {
     isAuth: false,
     user: null,
     chats: null,
-    loginError: null,
-    registerError: null,
-    userEditError: null,
-    userPasswordEditError: null,
-    userAvatarEditError: null,
+    currentChat: null,
   };
 }
 export const defaultState: AppState = getDefaultState();
 
-export type Chat = Record<string, number | string | unknown>;
+export type Chat = Record<string, number | string | object | unknown>;
 export interface AppState {
   isAppInit: boolean,
   isLoading: boolean,
@@ -31,11 +27,6 @@ export interface AppState {
     chat: null | Chat,
     messages: Array<Chat> | null,
   } | any,
-  loginError: string | null;
-  registerError: string | null;
-  userEditError: string | null;
-  userPasswordEditError: string | null;
-  userAvatarEditError: string | null;
 }
 
 export type Dispatch<State> = (

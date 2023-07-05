@@ -129,7 +129,7 @@ button {
       background-color: $alt-color;
     }
   }
-  &__user-add {
+  &__chat-add {
     position: absolute;
     top: 5px;
     right: 0;
@@ -758,14 +758,15 @@ button {
   left: 0;
   background-color: $mask-bg-color;
 
-  display: flex;
   justify-content: center;
   align-items: center;
 
+  display: none;
   visibility: hidden;
   pointer-events: none;
 
   &_show, &:target {
+    display: flex;
     visibility: visible;
     pointer-events: auto;
   }
@@ -822,6 +823,7 @@ button {
   margin-top: -0.1em;
   background-color: $black-color;
 
+  &_plus { @include svg-icon('../images/icons/plus.svg'); }
   &_chats { @include svg-icon('../images/icons/chats.svg'); }
   &_user-add { @include svg-icon('../images/icons/user-add.svg'); }
   &_user-remove { @include svg-icon('../images/icons/user-remove.svg'); }

@@ -41,7 +41,7 @@ class ChatController extends BaseController {
     }
   }
 
-  public async deleteChats(): Promise<void> {
+  public async deleteChat(): Promise<void> {
     try {
       const chatId = this?.store?.getState()?.currentChat?.chat?.id;
       if (typeof chatId !== 'number') return;
@@ -88,20 +88,31 @@ class ChatController extends BaseController {
   public async addNewChatUser(user: Record<string, string | number>): Promise<boolean | void> {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     const { display_name, login, id } = user;
-    let chat = this?.store?.getState()?.currentChat?.chat?.id;
+    let chatId = this?.store?.getState()?.currentChat?.chat?.id;
     // eslint-disable-next-line no-restricted-globals
-    if (!confirm(`Вы хотите ${chat ? 'добавить в текущий чат ' : 'создать новый чат с '}${login}`)) {
+    if (!confirm(`Вы хотите ${chatId ? 'добавить в текущий чат ' : 'создать новый чат с '}${login}`)) {
       return;
     }
-    if (!chat) {
+    if (!chatId) {
       const title = display_name ?? login;
-      chat = await this.createChat(String(title));
+      chatId = await this.createChat(String(title));
       return;
     }
-    if (!chat) return;
-    const result = await this.addUser(Number(chat), Number(id));
+    if (!chatId) return;
+    const result = await this.addUser(Number(chatId), Number(id));
     // eslint-disable-next-line consistent-return
     return result;
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  public getDateStr(utcStr: string): string {
+    if (!utcStr) return '';
+    const sourceDate = new Date(utcStr);
+    const currentDate = new Date();
+    if (sourceDate.getDate() === currentDate.getDate()) {
+      return `${sourceDate.getHours()}:${sourceDate.getMinutes()}`;
+    }
+    return sourceDate.toDateString();
   }
 }
 

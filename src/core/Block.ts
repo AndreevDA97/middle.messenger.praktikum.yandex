@@ -117,18 +117,18 @@ export default class Block<P extends TProps = any> {
     Object.values(this.children).forEach((child) => child.dispatchComponentDidMount());
   }
 
-  private _componentDidUpdate(oldProps: P, newProps: P): void {
+  private _componentDidUpdate(oldProps: P, newProps: Partial<P>): void {
     if (this.componentDidUpdate(oldProps, newProps)) {
       this.eventBus().emit(Block.EVENTS.RENDER);
     }
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  public componentDidUpdate(_oldProps: P, _newProps: P): boolean {
+  public componentDidUpdate(_oldProps: P, _newProps: Partial<P>): boolean {
     return true;
   }
 
-  public setProps = (nextProps: P): void => {
+  public setProps = (nextProps: Partial<P>): void => {
     if (!nextProps) {
       return;
     }

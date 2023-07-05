@@ -7,6 +7,7 @@ class FileApi extends BaseAPI {
 
   // eslint-disable-next-line class-methods-use-this
   public getFileSrc(path: string):string {
+    if (!path) return '';
     return `${UserApi.baseUrl}/resources/${path}`;
   }
 }

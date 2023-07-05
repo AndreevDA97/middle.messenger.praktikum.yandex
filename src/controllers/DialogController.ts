@@ -1,21 +1,21 @@
 import { wssUrl } from '../core/utils/configuration';
 import ChatApi from '../services/ChatApi';
 import BaseController from './BaseController';
+import { cloneDeep } from '../core/utils/extensions';
 
 export type TWSSConnectOptions = {
   userId: number | string,
   chatId: number | string,
   token: string,
 };
+enum EVENTS {
+  OPEN = 'open',
+  MESSAGE = 'message',
+  ERROR = 'error',
+  CLOSE = 'close',
+}
 
 class MessageController extends BaseController {
-  public EVENTS: Record<string, string> = {
-    OPEN: 'open',
-    MESSAGE: 'message',
-    ERROR: 'error',
-    CLOSE: 'close',
-  };
-
   private _userId: number | string | undefined;
 
   private _chatId: number | string | undefined;
@@ -37,7 +37,7 @@ class MessageController extends BaseController {
   constructor() {
     super();
     this._handleOpen = this._handleOpen.bind(this);
-    this._handleMassage = this._handleMassage.bind(this);
+    this._handleMessage = this._handleMessage.bind(this);
     this._handleError = this._handleError.bind(this);
     this._handleClose = this._handleClose.bind(this);
   }
@@ -82,8 +82,7 @@ class MessageController extends BaseController {
     const chat = this.store.getState().chats
       ?.find((c) => c.id === Number(id));
     if (chat && chat?.id !== this.store?.getState()?.currentChat?.chat?.id) {
-      this.store.set({ currentChat: { isLoading: true } });
-      this.store.set({ currentChat: { chat } });
+      this.store.set({ currentChat: { isLoading: true, chat: cloneDeep(chat) } });
 
       await this.disconnect();
       this.connect();
@@ -91,17 +90,17 @@ class MessageController extends BaseController {
   }
 
   private _addEvents() {
-    this.socket?.addEventListener(this.EVENTS.OPEN, this._handleOpen);
-    this.socket?.addEventListener(this.EVENTS.MESSAGE, this._handleMassage);
-    this.socket?.addEventListener(this.EVENTS.ERROR, this._handleError);
-    this.socket?.addEventListener(this.EVENTS.CLOSE, this._handleClose);
+    this.socket?.addEventListener(EVENTS.OPEN, this._handleOpen);
+    this.socket?.addEventListener(EVENTS.MESSAGE, this._handleMessage);
+    this.socket?.addEventListener(EVENTS.ERROR, this._handleError);
+    this.socket?.addEventListener(EVENTS.CLOSE, this._handleClose);
   }
 
   private _removeEvents() {
-    this.socket?.removeEventListener(this.EVENTS.OPEN, this._handleOpen);
-    this.socket?.removeEventListener(this.EVENTS.MESSAGE, this._handleMassage);
-    this.socket?.removeEventListener(this.EVENTS.ERROR, this._handleError);
-    this.socket?.removeEventListener(this.EVENTS.CLOSE, this._handleClose);
+    this.socket?.removeEventListener(EVENTS.OPEN, this._handleOpen);
+    this.socket?.removeEventListener(EVENTS.MESSAGE, this._handleMessage);
+    this.socket?.removeEventListener(EVENTS.ERROR, this._handleError);
+    this.socket?.removeEventListener(EVENTS.CLOSE, this._handleClose);
   }
 
   // eslint-disable-next-line consistent-return
@@ -131,7 +130,7 @@ class MessageController extends BaseController {
     }, 20000);
   }
 
-  private _handleMassage(e: MessageEvent) {
+  private _handleMessage(e: MessageEvent) {
     const data = JSON.parse(e.data);
     if (Array.isArray(data) && data.length < 20) {
       this._allMessage = true;

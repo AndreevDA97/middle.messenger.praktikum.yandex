@@ -4,11 +4,12 @@ import UserController from '../../controllers/UserController';
 import SidebarContacts, { TContact } from '../sidebar-contacts/sidebar-contacts';
 
 export type TSidebar = {
-  contacts: Array<TContact>,
+  contacts: Array<TContact> | null,
   search: string,
   avatarSrc?: string,
-  profile: boolean,
-  _sidebarContacts?: SidebarContacts
+  showChatAdd: boolean,
+  onChatAdd?: Function,
+  _sidebarContacts?: typeof SidebarContacts
 };
 export default class Sidebar extends Block {
   constructor(props: TSidebar) {
@@ -30,6 +31,9 @@ export default class Sidebar extends Block {
         const { value } = event.target as HTMLInputElement;
         UserController.searchUsers(this.children._sidebarContacts, value);
       };
+      const chatAddElement = document
+        .querySelector<HTMLElement>('.sidebar-header-status__chat-add');
+      chatAddElement!.onclick = this.props.onChatAdd;
     }, 100);
     return this.compile(this.props);
   }

@@ -14,7 +14,10 @@ import AuthController from './controllers/AuthController';
 
 declare global {
   interface Window {
-    additionalEffects: { create: () => void, clear: () => void };
+    additionalEffects: {
+      create: (onModalHide?: () => void) => void,
+      clear: () => void
+    };
     store: Store<AppState>;
     router: Router;
   }
@@ -25,7 +28,6 @@ window.addEventListener('DOMContentLoaded', () => {
   rootStore.on(
     StoreEvents.Changed,
     (prevState: Partial<AppState>, nextState: Partial<AppState>) => {
-      console.log('Store Changed', prevState, nextState);
       if (!prevState.isAppInit && nextState.isAppInit) {
         rootRouter
           // страница входа
@@ -78,9 +80,7 @@ window.addEventListener('DOMContentLoaded', () => {
               description: 'Просмотр компонентов веб-чата осуществляется по ссылкам ниже, возврат на главную с помощью навигации браузера',
               debug: true,
             },
-            needAuth: true,
-            onUnautorized: () => rootStore.getState().isAuth,
-            redirectPath: RoutePath.Login,
+            needAuth: false,
           })
           // страница ошибки 404
           .use({

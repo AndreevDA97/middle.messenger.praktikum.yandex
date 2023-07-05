@@ -1,3 +1,13 @@
+{{#if welcome}}
+<main class="chat-welcome">
+    <div class="chat-welcome__logo">
+        <span class="icon icon_chats"></span>
+    </div>
+    <div class="chat-welcome__message">
+        <span>Выберите чат чтобы отправить сообщение</span>
+    </div>
+</main>
+{{else}}
 <main class="chat-dialog">
     <section class="chat-dialog__user-panel">
         <div class="chat-user">
@@ -11,11 +21,15 @@
                         <span class="icon icon_menu"></span>
                     </div>
                     <div class="dropdown__menu {{#if openUserMenu}}dropdown__menu_show{{/if}}">
-                        <a href="#">
+                        <a href="#" id="user-add">
+                            <span class="icon icon_user-add"></span>
+                            Добавить пользователя
+                        </a>
+                        <a href="#" id="user-remove">
                             <span class="icon icon_user-remove"></span>
                             Удалить пользователя
                         </a>
-                        <a href="#">
+                        <a href="#" id="chat-remove">
                             <span class="icon icon_trash"></span>
                             Очистить переписку
                         </a>
@@ -91,3 +105,4 @@
         </div>
     </section>
 </main>
+{{/if}}

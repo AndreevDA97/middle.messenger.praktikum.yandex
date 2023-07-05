@@ -7,36 +7,32 @@ import chatterPhoto from '../../../static/images/chatter_photo.png';
 import { WithStateProps, withStore } from '../../core/utils/withStore';
 import { withRouter, WithRouterProps } from '../../core/utils/withRouter';
 import UserController from '../../controllers/UserController';
+import ChatController from '../../controllers/ChatController';
+import { RoutePath } from '../../core/utils/configuration';
 
 interface TChatPage extends WithRouterProps, WithStateProps {
-  welcome: boolean,
   _sidebar?: Sidebar,
-  _chatDialog?: ChatDialog,
+  _chatDialog?: typeof ChatDialog,
   _chatAddModal?: UserModal
 }
-class ChatPage extends Block {
+class ChatPage extends Block<TChatPage> {
   constructor(props: TChatPage) {
     if (!props.router || !props.store) {
       throw new Error('Ошибка инициализации');
     }
     const user = props.store.getState().user || {};
     const sidebar = new Sidebar({
-      contacts: [
-        { user: 'Андрей', message: 'Изображение', time: '10:49', count: '2' },
-        { user: 'Киноклуб', message: 'стикер', isMsgOwner: true, time: '12:00' },
-        { user: 'Илья', message: 'Друзья, у меня для вас особенный выпуск новостей!...', time: '15:12', count: '4' },
-        { user: 'Вадим', message: 'Круто!', isMsgOwner: true, time: 'Пт', isActive: true },
-        { user: 'тет-а-теты', message: 'И Human Interface Guidelines и Material Design рекомендуют...', time: 'Ср' },
-        { user: '1, 2, 3', message: 'Миллионы россиян ежедневно проводят десятки часов свое...', time: 'Пн' },
-        { user: 'Design Destroyer', message: 'В 2008 году художник Jon Rafman начал собирать...', time: 'Пн' },
-        { user: 'Day.', message: 'Так увлёкся работой по курсу, что совсем забыл его анонсир...', time: '1 Мая 2020' },
-        { user: 'Стас Рогозин', message: 'Можно или сегодня или завтра вечером.', time: '12 Апр 2020' },
-      ],
+      contacts: null,
       search: '',
       avatarSrc: UserController.getAvatarSrc(user.avatar as string),
-      profile: false,
+      showChatAdd: false,
+      onChatAdd: () => {
+        this.children._sidebar.setProps({ showChatAdd: true });
+        this.children._chatAddModal.setProps({ showModal: true });
+      },
     });
     const chatDialog = new ChatDialog({
+      welcome: true,
       chatter: 'Вадим',
       history: [
         { sender: SenderType.Owner, type: MsgType.Text, message: 'Круто!', time: '12:00', delivered: true },
@@ -50,11 +46,16 @@ class ChatPage extends Block {
     const chatAddModal = new UserModal({
       showModal: false,
       dialogId: 'chat-add',
-      title: 'Добавить пользователя',
+      title: 'Создать чат',
       titleError: '',
-      login: 'ivanivanov',
-      loginError: '',
-      submitText: 'Добавить',
+      fieldName: 'title',
+      fieldTitle: 'Название',
+      fieldPlaceholder: 'Введите название чата',
+      submitText: 'Создать',
+      onSubmit: async (_, value) => {
+        await ChatController.createChat.bind(ChatController)(value);
+        this.props.router!.go(RoutePath.Chat);
+      },
     });
     const nextProps: any = {
       ...props,
@@ -62,19 +63,18 @@ class ChatPage extends Block {
       _chatDialog: chatDialog,
       _chatAddModal: chatAddModal,
     };
-    nextProps.welcome = true;
     super('div', nextProps, template);
-  }
-
-  componentDidMount() {
-    setTimeout(window.additionalEffects.create, 100);
-  }
-
-  componentWillUnmount() {
-    window.additionalEffects.clear();
+    // обновить список чатовs
+    ChatController.getChats();
   }
 
   render() {
+    setTimeout(() => {
+      window.additionalEffects.clear();
+      window.additionalEffects.create(() => {
+        this.children._sidebar.setProps({ showChatAdd: false });
+      });
+    }, 100);
     return this.compile(this.props);
   }
 }

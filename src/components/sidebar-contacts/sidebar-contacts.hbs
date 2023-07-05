@@ -17,10 +17,10 @@
         {{/unless}}
     {{else}}
         {{#each contacts}}
-            <div class="sidebar-contacts__item {{#if isActive}}sidebar-contacts__item_active{{/if}}">
+            <div class="sidebar-contacts__item {{#if isActive}}sidebar-contacts__item_active{{/if}}" id="chat-{{chatId}}">
                 <div class="sidebar-contact">
                     <div class="sidebar-contact__avatar"></div>
-                    <div class="sidebar-contact__username">{{user}}</div>
+                    <div class="sidebar-contact__username">{{title}}</div>
                     <div class="sidebar-contact__message {{#if isMsgOwner}}sidebar-contact__message_owner{{/if}}">{{message}}</div>
                     <div class="sidebar-contact__time">{{time}}</div>
                     {{#if count}}

@@ -11,19 +11,26 @@ export function withStore<P extends WithStateProps>(WrappedBlock: BlockClass<P>)
       super({ ...props, store: rootStore });
     }
 
-    __onChangeStoreCallback = () => {
-      // @ts-expect-error this is not typed
-      this.setProps({ ...this.props, store: rootStore });
+    _onChangeStoreCallback = (oldProps: P, newProps: Partial<P>) => {
+      if (this.onChangeStoreCallback(oldProps, newProps)) {
+        // @ts-expect-error this is not typed
+        this.setProps({ ...this.props, store: rootStore });
+      }
     };
+
+    // eslint-disable-next-line class-methods-use-this,@typescript-eslint/no-unused-vars
+    public onChangeStoreCallback(_oldProps: P, _newProps: Partial<P>): boolean {
+      return true;
+    }
 
     componentDidMount(props: P) {
       super.componentDidMount(props);
-      rootStore.on(StoreEvents.Changed, this.__onChangeStoreCallback);
+      rootStore.on(StoreEvents.Changed, this._onChangeStoreCallback);
     }
 
     componentWillUnmount() {
       super.componentWillUnmount();
-      rootStore.off(StoreEvents.Changed, this.__onChangeStoreCallback);
+      rootStore.off(StoreEvents.Changed, this._onChangeStoreCallback);
     }
   } as BlockClass<Omit<P, 'store'>>;
 }
