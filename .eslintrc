@@ -11,6 +11,8 @@
     "newline-per-chained-call": "error",
     "no-underscore-dangle": "off",
     "no-trailing-spaces": "off",
-    "object-curly-newline": "off"
+    "object-curly-newline": "off",
+    "no-continue": "off",
+    "no-prototype-builtins": "off"
   }
 }

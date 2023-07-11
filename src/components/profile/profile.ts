@@ -3,6 +3,8 @@ import Block from '../../core/Block';
 import Button, { ButtonType } from '../button/button';
 import Input, { InputType, InputTemplate } from '../input/input';
 import validate, { RegexRules } from '../../core/utils/validateInput';
+import UserController from '../../controllers/UserController';
+import { rootStore } from '../../core/Store';
 
 export enum ProfileAction {
   Profile,
@@ -10,12 +12,17 @@ export enum ProfileAction {
   PasswordEdit,
 }
 type TProfile = {
-  action: ProfileAction,
+  action?: ProfileAction,
   displayName: string,
-  editMode: boolean,
+  avatarSrc?: string,
+  editMode?: boolean,
+  onClickAvatar?: () => void,
+  _formFields?: Record<string, Input>,
+  _formButton?: Button
 };
 export default class Profile extends Block {
   constructor(props: TProfile) {
+    const userInfo = rootStore.getState().user || {};
     let formFields: Record<string, Input> = {};
     if (props.action === ProfileAction.Profile
         || props.action === ProfileAction.UserEdit) {
@@ -25,8 +32,8 @@ export default class Profile extends Block {
           name: 'email',
           type: InputType.Text,
           template: InputTemplate.Profile,
-          value: 'pochta@mail.ru',
-          editMode: props.editMode,
+          value: userInfo.email as string,
+          editMode: props.action === ProfileAction.UserEdit,
           check: (value) => (validate(RegexRules.EMAIL_REGEX, value)
             ? '' : 'Ошибка ввода почты'),
         }),
@@ -35,8 +42,8 @@ export default class Profile extends Block {
           name: 'login',
           type: InputType.Text,
           template: InputTemplate.Profile,
-          value: 'ivanivanov',
-          editMode: props.editMode,
+          value: userInfo.login as string,
+          editMode: props.action === ProfileAction.UserEdit,
           check: (value) => (validate(RegexRules.LOGIN_REGEX, value)
             ? '' : 'Ошибка ввода логина'),
         }),
@@ -45,8 +52,8 @@ export default class Profile extends Block {
           name: 'first_name',
           type: InputType.Text,
           template: InputTemplate.Profile,
-          value: 'Иван',
-          editMode: props.editMode,
+          value: userInfo.first_name as string,
+          editMode: props.action === ProfileAction.UserEdit,
           check: (value) => (validate(RegexRules.NAME_REGEX, value)
             ? '' : 'Ошибка ввода имени'),
         }),
@@ -55,8 +62,8 @@ export default class Profile extends Block {
           name: 'second_name',
           type: InputType.Text,
           template: InputTemplate.Profile,
-          value: 'Иванов',
-          editMode: props.editMode,
+          value: userInfo.second_name as string,
+          editMode: props.action === ProfileAction.UserEdit,
           check: (value) => (validate(RegexRules.NAME_REGEX, value)
             ? '' : 'Ошибка ввода фамилии'),
         }),
@@ -65,31 +72,54 @@ export default class Profile extends Block {
           name: 'display_name',
           type: InputType.Text,
           template: InputTemplate.Profile,
-          value: 'Иван',
-          editMode: props.editMode,
+          value: userInfo.display_name as string,
+          editMode: props.action === ProfileAction.UserEdit,
         }),
         phoneInput: new Input({
           title: 'Телефон',
           name: 'phone',
           type: InputType.Text,
           template: InputTemplate.Profile,
-          value: '+79099342354',
-          editMode: props.editMode,
+          value: userInfo.phone as string,
+          editMode: props.action === ProfileAction.UserEdit,
           check: (value) => (validate(RegexRules.PHONE_REGEX, value)
             ? '' : 'Ошибка ввода телефона'),
         }),
       };
     } else if (props.action === ProfileAction.PasswordEdit) {
       formFields = {
-        emailInput: new Input({
-          title: 'Почта',
-          name: 'email',
-          type: InputType.Text,
+        oldPasswordInput: new Input({
+          title: 'Старый пароль',
+          name: 'oldPassword',
+          type: InputType.Password,
           template: InputTemplate.Profile,
-          value: 'pochta@mail.ru',
-          editMode: props.editMode,
-          check: (value) => (validate(RegexRules.EMAIL_REGEX, value)
-            ? '' : 'Ошибка ввода почты'),
+          value: '',
+          placeholder: '••••••',
+          editMode: true,
+          check: (value) => (validate(RegexRules.PASSWORD_REGEX, value)
+            ? '' : 'Ошибка ввода пароля'),
+        }),
+        newPasswordAttemptInput: new Input({
+          title: 'Новый пароль',
+          name: 'newPasswordAttempt',
+          type: InputType.Password,
+          template: InputTemplate.Profile,
+          value: '',
+          placeholder: '••••••••',
+          editMode: true,
+          check: (value) => (validate(RegexRules.PASSWORD_REGEX, value)
+            ? '' : 'Ошибка ввода пароля'),
+        }),
+        newPasswordInput: new Input({
+          title: 'Повторите новый пароль',
+          name: 'newPassword',
+          type: InputType.Password,
+          template: InputTemplate.Profile,
+          value: '',
+          placeholder: '••••••••',
+          editMode: true,
+          check: (value) => (validate(RegexRules.PASSWORD_REGEX, value)
+            ? '' : 'Ошибка ввода пароля'),
         }),
       };
     }
@@ -110,23 +140,33 @@ export default class Profile extends Block {
             data[child.props.name] = String(child.props.value);
           });
           console.log(data);
+          // отправить запрос на изменение данных
+          if (props.action === ProfileAction.PasswordEdit) {
+            UserController.changePassword.bind(UserController)(data);
+          } else if (props.action === ProfileAction.UserEdit) {
+            UserController.changeData.bind(UserController)(data);
+          }
         },
       },
     });
     const nextProps: any = {
       ...props,
       ...formFields,
-      button,
+      _formFields: formFields,
+      _formButton: button,
     };
-    nextProps._formFields = '';
-    Object.values(formFields).forEach((input: Block) => {
-      nextProps._formFields += `<div data-id="${input.props._id}"></div>`;
-    });
-    nextProps._formButtons = `<div data-id="${button.props._id}"></div>`;
+    nextProps.editMode = props.action === ProfileAction.UserEdit
+        || props.action === ProfileAction.PasswordEdit;
     super('div', nextProps, template);
   }
 
   render() {
+    setTimeout(() => {
+      const avatarElement = document.getElementById('user-avatar');
+      avatarElement!.onclick = () => {
+        this.props.onClickAvatar();
+      };
+    }, 100);
     return this.compile(this.props);
   }
 }

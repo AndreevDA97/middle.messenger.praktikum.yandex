@@ -16,6 +16,7 @@ export type TInput = {
   type?: InputType,
   name: string,
   value: string,
+  placeholder?: string,
   editMode?: boolean,
   errorMsg?: string,
   check?: (value: string) => string,
@@ -28,19 +29,19 @@ export default class Input extends Block {
       ...props,
       events: {
         ...props.events,
-        focusin: (self: Input, evt: Event) => {
-          const { value } = evt.target as HTMLInputElement;
+        focusin: (self: Input, event: Event) => {
+          const { value } = event.target as HTMLInputElement;
           const checkMsg = this.props.check ? this.props.check(value) : '';
           self.setProps({ value, errorMsg: checkMsg });
         },
-        focusout: (self: Input, evt: Event) => {
-          const { value } = evt.target as HTMLInputElement;
+        focusout: (self: Input, event: Event) => {
+          const { value } = event.target as HTMLInputElement;
           const checkMsg = this.props.check ? this.props.check(value) : '';
           self.setProps({ value, errorMsg: checkMsg });
         },
       },
     };
-    const templator = props.template == InputTemplate.Profile
+    const templator = props.template === InputTemplate.Profile
       ? templateProfile : templateDefault;
     super('div', nextProps, templator);
   }

@@ -2,7 +2,7 @@
     <label class="form-horizontal__label" for="{{name}}">{{title}}</label>
     <input class="form-horizontal__input {{#unless editMode}}form-horizontal__input_disabled{{/unless}}"
             type="{{#if type}}{{type}}{{else}}text{{/if}}"
-            placeholder="{{title}}"
+            placeholder="{{#if placeholder}}{{placeholder}}{{else}}—{{/if}}"
             name="{{name}}"
             value="{{value}}">
 </div>
