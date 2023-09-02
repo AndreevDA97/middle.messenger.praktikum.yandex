@@ -5,7 +5,8 @@
     "@typescript-eslint"
   ],
   "parserOptions": {
-    "project": ["tsconfig.json"]
+    "files": ["*.ts", "*.tsx"],
+    "project": ["./tsconfig.json"]
   },
   "rules": {
     "newline-per-chained-call": "error",

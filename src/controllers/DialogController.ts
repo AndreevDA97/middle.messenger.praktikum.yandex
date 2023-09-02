@@ -125,6 +125,7 @@ class MessageController extends BaseController {
   private _handleOpen() {
     this.store.set({ currentChat: { messages: null } });
     this.getMessage();
+    // @ts-ignore
     this._ping = setInterval(() => {
       this.socket?.send(JSON.stringify({
         content: '',

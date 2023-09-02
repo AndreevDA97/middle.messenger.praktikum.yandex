@@ -11,6 +11,8 @@ import { Store, AppState, StoreEvents, rootStore } from './core/Store';
 import Router, { rootRouter } from './core/Router';
 import { RoutePath } from './core/utils/configuration';
 import AuthController from './controllers/AuthController';
+import '../static/styles/stylesheet.scss';
+import './additional';
 
 declare global {
   interface Window {

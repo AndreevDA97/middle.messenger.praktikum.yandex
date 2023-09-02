@@ -154,7 +154,7 @@ export default class Block<P extends TProps = any> {
     if (typeof fragment === 'string') {
       this._element.innerHTML = '';
       this._element.insertAdjacentHTML('afterbegin', fragment);
-    } else {
+    } else if (fragment) {
       // TODO: удалить после успешного тестирования replaceWith
       // this._element.innerHTML = '';
       // this._element.append(fragment);
