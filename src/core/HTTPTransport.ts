@@ -14,14 +14,17 @@ export type TOptions = {
   method?: string,
   timeout?: number
 };
-type HTTPMethod = (url: string, options?: TOptions) => Promise<unknown>;
+type HTTPMethod = (url: string, options?: TOptions) => Promise<any>;
 type HTTPRequest = (url: string, options?: TOptions, timeout?: number) => Promise<unknown | void>;
 
 export default class HTTPTransport {
   baseUrl: string = '';
 
-  constructor(baseUrl: string) {
+  withCredentials: boolean;
+
+  constructor(baseUrl: string, withCredentials: boolean = true) {
     this.baseUrl = baseUrl;
+    this.withCredentials = withCredentials;
   }
 
   public get: HTTPMethod = (url = '', options = {}) => (
@@ -56,7 +59,7 @@ export default class HTTPTransport {
         ? query + queryStringify(data) : query;
 
       xhr.open(method, fullQuery);
-      xhr.withCredentials = true;
+      xhr.withCredentials = this.withCredentials;
       Object.keys(headers).forEach((key) => {
         xhr.setRequestHeader(key, headers[key]);
       });

@@ -3,12 +3,16 @@
     "outDir": "dist",
     "target": "es2019",
     "declaration": false,
-    "module": "ES6",
+    "module": "es6",
     "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "allowJs": true,
     "noImplicitAny": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "sourceMap": true,
     "strictNullChecks": true
-  }
+  },
+  "files": ["src/index.ts"],
+  "include": ["src", "jest.config.ts"]
 }
